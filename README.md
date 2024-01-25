@@ -1,7 +1,7 @@
 # COM617
 
 Primary Roles:
-Owen Bradstreet - Development
+Owen Bradstreet - Development, Database Expert
 Jacob Shattock - Documentation
 Steve Dawe - Server Ops (Azure), Presentation
 Gaetano Archer - Development, Presentation
