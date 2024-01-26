@@ -1,0 +1,66 @@
+﻿@page "/vm"
+@using COM617.Services
+@using Data
+@inject MongoDbService mongoDbService
+
+<PageTitle>Vehicle Management</PageTitle>
+
+<h1>Create Vehicle</h1>
+
+<label>Make</label>
+<input @bind=newVehicle.Make />
+
+<label>Model Name</label>
+<input @bind=newVehicle.ModelName />
+
+<label>Model Number</label>
+<input @bind=newVehicle.ModelNumber />
+
+<label>Plate</label>
+<input @bind=newVehicle.Plate />
+
+<label>Model Name</label>
+<select @bind=newVehicle.Type>
+    <option value="@VehicleType.Car">Car</option>
+    <option value="@VehicleType.CarXL">Car XL (7 Seater)</option>
+    <option value="@VehicleType.Truck">Truck</option>
+    <option value="@VehicleType.Van">Van</option>
+</select>
+
+<label>Year</label>
+<input type="number" @bind=newVehicle.Year />
+
+<label>Doors</label>
+<input type="number" @bind=newVehicle.Doors />
+
+<label>Seats</label>
+<input type="number" @bind=newVehicle.Seats />
+
+<button class="btn btn-primary" @onclick="CreateVehicle">Create Vehicle!</button>
+
+<h1>Vehicle List</h1>
+<ul>
+@foreach (var vehicle in vehicles)
+{
+    <li>
+        @vehicle.Make @vehicle.ModelName (@vehicle.Year)
+    </li>
+}
+</ul>
+
+<button @onclick="StateHasChanged">Refresh</button>
+
+@code {
+    private Vehicle newVehicle = new();
+    private List<Vehicle> vehicles => GetVehicles();
+
+
+    private async void CreateVehicle() {
+        await mongoDbService.CreateDocument(newVehicle);
+        StateHasChanged();
+    }
+
+    private List<Vehicle> GetVehicles() {
+        return mongoDbService.GetDocumentsByFilter<Vehicle>(vehicle => vehicle.Id != Guid.Empty).ToList();
+    }
+}

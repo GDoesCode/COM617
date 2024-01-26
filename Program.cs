@@ -1,4 +1,5 @@
 using COM617.Data;
+using COM617.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
@@ -32,6 +33,7 @@ namespace COM617
             builder.Services.AddServerSideBlazor()
                 .AddMicrosoftIdentityConsentHandler();
             builder.Services.AddSingleton<WeatherForecastService>();
+            builder.Services.AddSingleton<MongoDbService>();
 
             var app = builder.Build();
 
