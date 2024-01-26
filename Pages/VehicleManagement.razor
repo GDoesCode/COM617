@@ -9,15 +9,19 @@
 
 <label>Make</label>
 <input @bind=newVehicle.Make />
+<br/>
 
 <label>Model Name</label>
 <input @bind=newVehicle.ModelName />
+<br />
 
 <label>Model Number</label>
 <input @bind=newVehicle.ModelNumber />
+<br />
 
 <label>Plate</label>
 <input @bind=newVehicle.Plate />
+<br />
 
 <label>Model Name</label>
 <select @bind=newVehicle.Type>
@@ -26,23 +30,34 @@
     <option value="@VehicleType.Truck">Truck</option>
     <option value="@VehicleType.Van">Van</option>
 </select>
+<br />
 
 <label>Year</label>
-<input type="number" @bind=newVehicle.Year />
+<select @bind=newVehicle.Year>
+@for (int year = DateTime.Now.Year; year >= DateTime.Now.Year - 100; year--)
+{
+    <option value="@year">@year</option>
+}
+</select>
+<br />
 
 <label>Doors</label>
 <input type="number" @bind=newVehicle.Doors />
+<br />
 
 <label>Seats</label>
 <input type="number" @bind=newVehicle.Seats />
+<br />
+<br/>
 
 <button class="btn btn-primary" @onclick="CreateVehicle">Create Vehicle!</button>
+<br/>
 
 <h1>Vehicle List</h1>
 <ul>
 @foreach (var vehicle in vehicles)
 {
-    <li>
+    <li @onclick="() => DeleteVehicle(vehicle)">
         @vehicle.Make @vehicle.ModelName (@vehicle.Year)
     </li>
 }
@@ -54,13 +69,18 @@
     private Vehicle newVehicle = new();
     private List<Vehicle> vehicles => GetVehicles();
 
+    private List<Vehicle> GetVehicles()
+    {
+        return mongoDbService.GetDocumentsByFilter<Vehicle>(vehicle => vehicle.Id != Guid.Empty).ToList();
+    }
 
-    private async void CreateVehicle() {
+    private async Task CreateVehicle() {
         await mongoDbService.CreateDocument(newVehicle);
         StateHasChanged();
     }
 
-    private List<Vehicle> GetVehicles() {
-        return mongoDbService.GetDocumentsByFilter<Vehicle>(vehicle => vehicle.Id != Guid.Empty).ToList();
+    private async Task DeleteVehicle(Vehicle vehicle) {
+        await mongoDbService.DeleteDocument<Vehicle>(vehicle.Id);
+        StateHasChanged();
     }
 }
