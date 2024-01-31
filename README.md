@@ -26,7 +26,10 @@ Thank you for your interest in contributing to this project! To get started, you
 3. **Install the Task Runner Extension for Visual Studio**  
    This project uses NPM scripts for certain tasks. To easily run these from within Visual Studio, install the NPM Task Runner extension. You can find it on the Visual Studio Marketplace: [NPM Task Runner](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.NPMTaskRunner).
 
-4. **Install and Run MongoDB**  
+4. **Bind the Gulp script**
+   This project uses Gulp to run the Tailwind Watcher script in the background while you work. Press `CTRL+ALT+Backspace` to open the Task Runner GUI. The Gulp task should appear in the list on the left as `tailwind:watcher`. Right-click on the Task and, under `bindings`, select `Project Open`.
+
+6. **Install and Run MongoDB**  
    The project requires a running MongoDB server instance. Download and install MongoDB from [MongoDB Official Website](https://www.mongodb.com/try/download/community). Follow the installation instructions to set up and start your MongoDB server.
 
 Once you have completed these steps, you can clone the repository and open the `.sln` file in Visual Studio to start working on the project.
