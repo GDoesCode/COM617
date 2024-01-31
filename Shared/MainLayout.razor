@@ -5,6 +5,10 @@
 
 <AuthorizeView>
     <Authorized>
+        @{
+            CheckUser(context.User.Identity!);
+        }
+
         <div class="h-full bg-white">
             <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
             <MobileNavbar @ref="mobileNavbarRef" />
