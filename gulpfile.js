@@ -1,3 +1,4 @@
+/// <binding ProjectOpened='watch:tailwind' />
 const gulp = require('gulp');
 const exec = require('child_process').exec;
 
