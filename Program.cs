@@ -1,6 +1,8 @@
 using COM617.Data;
 using COM617.Services;
+using COM617.Services.Identity;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using MongoDB.Bson;
@@ -30,8 +32,9 @@ namespace COM617
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor()
                 .AddMicrosoftIdentityConsentHandler();
-            builder.Services.AddSingleton<WeatherForecastService>();
+
             builder.Services.AddSingleton<MongoDbService>();
+            
 
             // Set MongoDb's guid serializer
             #pragma warning disable CS0618 // This line won't be required in future versions of the MongoDb driver.
