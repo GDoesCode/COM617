@@ -1,20 +1,33 @@
 ﻿@inherits LayoutComponentBase
+@using COM617.Components.Nav
 
 <PageTitle>COM617</PageTitle>
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+<AuthorizeView>
+    <Authorized>
+        <div class="h-full bg-white">
+            <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
+            <MobileNavbar @ref="mobileNavbarRef" />
 
-    <main>
-        <div class="top-row px-4 auth">
-            <LoginDisplay />
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+            <!-- Static sidebar for desktop -->
+            <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+                <!-- Sidebar component, swap this element with another sidebar if you like -->
+                <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4">
+                    <DesktopNavbar />
+                </div>
+            </div>
+
+            <div class="lg:pl-72">
+                <TopNavbar OnClick="(_, _) => mobileNavbarRef.ToggleNavMenu()" />
+
+                <main class="py-10">
+                    <div class="px-4 sm:px-6 lg:px-8">
+                        @Body
+                    </div>
+                </main>
+            </div>
         </div>
+    </Authorized>
+</AuthorizeView>
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
+
