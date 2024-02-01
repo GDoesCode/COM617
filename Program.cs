@@ -1,12 +1,11 @@
 using COM617.Data;
-using Microsoft.AspNetCore.Authentication;
+using COM617.Services;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 
 namespace COM617
 {
@@ -32,6 +31,13 @@ namespace COM617
             builder.Services.AddServerSideBlazor()
                 .AddMicrosoftIdentityConsentHandler();
             builder.Services.AddSingleton<WeatherForecastService>();
+            builder.Services.AddSingleton<MongoDbService>();
+
+            // Set MongoDb's guid serializer
+            #pragma warning disable CS0618 // This line won't be required in future versions of the MongoDb driver.
+            BsonDefaults.GuidRepresentationMode = GuidRepresentationMode.V3;
+            #pragma warning restore CS0618 
+            BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
 
             var app = builder.Build();
 

@@ -1,0 +1,87 @@
+﻿@page "/vm"
+@using COM617.Services
+@using Data
+@inject MongoDbService mongoDbService
+
+<PageTitle>Vehicle Management</PageTitle>
+
+<h1>Create Vehicle</h1>
+
+<label>Make</label>
+<input @bind=newVehicle.Make />
+<br/>
+
+<label>Model Name</label>
+<input @bind=newVehicle.ModelName />
+<br />
+
+<label>Model Number</label>
+<input @bind=newVehicle.ModelNumber />
+<br />
+
+<label>Plate</label>
+<input @bind=newVehicle.Plate />
+<br />
+
+<label>Model Name</label>
+<select @bind=newVehicle.Type>
+    <option value="@VehicleType.Car">Car</option>
+    <option value="@VehicleType.CarXL">Car XL (7 Seater)</option>
+    <option value="@VehicleType.Truck">Truck</option>
+    <option value="@VehicleType.Van">Van</option>
+</select>
+<br />
+
+<label>Year</label>
+<select @bind=newVehicle.Year>
+@for (int year = DateTime.Now.Year; year >= DateTime.Now.Year - 100; year--)
+{
+    <option value="@year">@year</option>
+}
+</select>
+<br />
+
+<label>Doors</label>
+<input type="number" @bind=newVehicle.Doors />
+<br />
+
+<label>Seats</label>
+<input type="number" @bind=newVehicle.Seats />
+<br />
+<br/>
+
+<button class="btn btn-primary" @onclick="CreateVehicle">Create Vehicle!</button>
+<br/>
+
+<h1>Vehicle List</h1>
+<ul>
+@foreach (var vehicle in vehicles)
+{
+    <li @onclick="() => DeleteVehicle(vehicle)">
+        @vehicle.Make @vehicle.ModelName (@vehicle.Year)
+    </li>
+}
+</ul>
+
+<button @onclick="StateHasChanged">Refresh</button>
+
+@code {
+    private Vehicle newVehicle = new();
+    private List<Vehicle> vehicles => GetVehicles();
+
+    private List<Vehicle> GetVehicles()
+    {
+        return mongoDbService.GetDocumentsByFilter<Vehicle>(vehicle => vehicle.Id != Guid.Empty).ToList();
+    }
+
+    private async Task CreateVehicle() {
+        await mongoDbService.CreateDocument(newVehicle);
+        newVehicle = new();
+        StateHasChanged();
+    }
+
+    private async Task DeleteVehicle(Vehicle vehicle) {
+        await mongoDbService.DeleteDocument<Vehicle>(vehicle.Id);
+        StateHasChanged();
+    }
+}
