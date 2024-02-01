@@ -11,6 +11,7 @@ namespace COM617.Shared
     public partial class MainLayout
     {
         private MobileNavbar? mobileNavbarRef;
+        private IIdentity? identity;
 
         [Inject]
         private NavigationManager? navigationManager { get; set; }
@@ -21,23 +22,21 @@ namespace COM617.Shared
         [Inject]
         private UserState? userState { get; set; }
 
-        private async void CheckUser(IIdentity identity)
+        private void SetIdentity(IIdentity newIdentity) => identity = newIdentity;
+        private void CheckUser()
         {
-            var user = userService!.GetUser(identity.Name!);
+            var user = userService!.GetUser(identity!.Name!);
+
             if (user is null)
-            {
-                await userService.CreateUser(new User
-                {
-                    Email = identity.Name!,
-                    Firstname = identity.Name!,
-                    Lastname = identity.Name!,
-                    Role = UserRole.Admin
-                });
-            } 
+                navigationManager!.NavigateTo("/register");
             else
-            {
                 userState!.SetCurrentUser(user);
-            }
+        }
+
+        protected override void OnAfterRender(bool firstRender)
+        {
+            if (firstRender)
+                CheckUser();
         }
     }
 }
