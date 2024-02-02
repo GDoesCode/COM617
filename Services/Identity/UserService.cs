@@ -29,6 +29,18 @@ namespace COM617.Services.Identity
                 return false;
         }
 
+        public async Task<bool> UpdateUser(User user)
+        {
+            var dbUser = GetUser(user.Email!);
+            if (dbUser is null)
+                return false;
+            else
+            {
+                await mongoDbService.ReplaceDocument(user.Id, user);
+                return true;
+            }
+        }
+
         public UserApplication? GetUserApplication(string email) => mongoDbService.GetDocumentsByFilter<UserApplication>(app => app.User.Email == email).FirstOrDefault();
 
         public async Task CreateUserApplication(UserApplication userApplication) => await mongoDbService.CreateDocument(userApplication);
