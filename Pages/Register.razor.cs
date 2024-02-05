@@ -11,19 +11,22 @@ namespace COM617.Pages
         private bool? accountCreated = null;
 
         [Inject]
-        private UserService? userService { get; set; }
+        private UserService? UserService { get; set; }
+
+        [Inject]
+        private UserState? UserState { get; set; }
 
         private async void RequestAccount(IIdentity identity)
         {
-            var userApp = userService!.GetUserApplication(identity.Name!);
+            var userApp = UserService!.GetUserApplication(identity.Name!);
             if (userApp is not null)
             {
                 accountRequested = true;
             }
             else
             {
-                var newUser = new User(identity.Name!, identity.Name!, identity.Name!);
-                await userService.CreateUserApplication(new UserApplication(newUser));
+                var newUser = new User(identity.Name!);
+                await UserService.CreateUserApplication(new UserApplication(newUser));
                 accountRequested = true;
             }
             StateHasChanged();
@@ -31,7 +34,9 @@ namespace COM617.Pages
 
         private async void CreateAccount(IIdentity identity)
         {
-            accountCreated = await userService!.CreateUser(new User(identity.Name!, identity.Name!, identity.Name!));
+            var user = new User(identity.Name!, UserRole.Admin);
+            accountCreated = await UserService!.CreateUser(user);
+            UserState!.SetCurrentUser(user);
             StateHasChanged();
         }
     }

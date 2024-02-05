@@ -1,28 +1,30 @@
 ﻿using COM617.Services;
 using Microsoft.AspNetCore.Identity;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace COM617.Data
 {
     /// <summary>
-    /// Primary user class for AFST.
+    /// User data class.
     /// </summary>
     /// <seealso cref="IdentityUser" />
     [MongoTypeMap("com617", "Users")]
-    public class User : IdentityUser
+    public class User
     {
-        public string Firstname { get; set; } = string.Empty;
-        public string Lastname { get; set; } = string.Empty;
-        public UserRole Role { get; set; } = UserRole.Standard;
+        [BsonId]
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public string Email { get; set; } = string.Empty;
+        public string Firstname { get; set; }
+        public string Lastname { get; set; }
+        public UserRole Role { get; set; }
 
-        public User(string firstname, string lastname, string email, UserRole role = UserRole.Standard)
+        public User(string email, UserRole role = UserRole.Standard, string firstName = "", string lastName = "")
         {
             Role = role;
-            UserName = email;
             Email = email;
-            Firstname = firstname;
-            Lastname = lastname;
+            Firstname = firstName;
+            Lastname = lastName;
         }
-        public User() { }
 
         public bool ChangeRole(User currentUser, UserRole role)
         {
