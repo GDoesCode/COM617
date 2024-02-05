@@ -1,5 +1,6 @@
 using COM617.Data;
 using COM617.Services;
+using COM617.Services.Identity;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Identity.Web;
@@ -33,10 +34,11 @@ namespace COM617
                 .AddMicrosoftIdentityConsentHandler();
 
             builder.Services.AddSingleton<MongoDbService>();
-            
+            builder.Services.AddSingleton<UserService>();
+            builder.Services.AddSingleton<UserState>();
 
             // Set MongoDb's guid serializer
-            #pragma warning disable CS0618 // This line won't be required in future versions of the MongoDb driver.
+#pragma warning disable CS0618 // This line won't be required in future versions of the MongoDb driver.
             BsonDefaults.GuidRepresentationMode = GuidRepresentationMode.V3;
             #pragma warning restore CS0618 
             BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));

@@ -1,26 +1,42 @@
 ﻿using COM617.Components.Nav;
+using COM617.Data;
 using COM617.Services;
+using COM617.Services.Identity;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
+using System.Security.Principal;
 
 namespace COM617.Shared
 {
     public partial class MainLayout
     {
-        [Inject]
-        private MongoDbService? mongoDbService { get; set; }
+        private MobileNavbar? mobileNavbarRef;
+        private IIdentity? identity;
 
         [Inject]
         private NavigationManager? navigationManager { get; set; }
 
-        private MobileNavbar? mobileNavbarRef { get; set; }
+        [Inject]
+        private UserService? userService { get; set; }
 
-        /*
-        protected override void OnInitialized()
+        [Inject]
+        private UserState? userState { get; set; }
+
+        private void SetIdentity(IIdentity newIdentity) => identity = newIdentity;
+        private void CheckUser()
         {
-            if (!UserRegistered())
-                navigationManager!.NavigateTo("unregistered", true);
-        }*/
+            var user = userService!.GetUser(identity!.Name!);
 
-        //private bool UserRegistered() => mongoDbService!.GetDocumentsByFilter<User>(user => user.Email == identityService!.CurrentUser().Email).Any();
+            if (user is null)
+                navigationManager!.NavigateTo("/register");
+            else
+                userState!.SetCurrentUser(user);
+        }
+
+        protected override void OnAfterRender(bool firstRender)
+        {
+            if (firstRender)
+                CheckUser();
+        }
     }
 }

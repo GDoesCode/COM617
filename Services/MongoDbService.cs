@@ -5,69 +5,9 @@ using System.Reflection;
 namespace COM617.Services
 {
     /// <summary>
-    /// Facilitates management of MongoDB databases.
-    /// </summary>
-    public interface IMongoDbService
-    {
-        /// <summary>
-        /// Creates a MongoDB document of a given C# type.
-        /// </summary>
-        /// <typeparam name="T">The type of the documents</typeparam>
-        /// <param name="document">The document.</param>
-        Task CreateDocument<T>(T document);
-
-        /// <summary>
-        /// Creates multiple MongoDB documents of a given C# type.
-        /// </summary>
-        /// <typeparam name="T">The type of the documents</typeparam>
-        /// <param name="documents">The documents.</param>
-        Task CreateDocuments<T>(T[] documents);
-
-        /// <summary>
-        /// Replaces a given document.
-        /// </summary>
-        /// <typeparam name="T">The type of the document.</typeparam>
-        /// <param name="id">The Id of the document to replace.</param>
-        /// <param name="replacement">The document to replace it with.</param>
-        Task<ReplaceOneResult> ReplaceDocument<T>(Guid id, T replacement);
-
-        /// <summary>
-        /// Deletes a given document
-        /// </summary>
-        /// <typeparam name="T">The type of the document.</typeparam>
-        /// <param name="id">The Id of the document to delete.</param>
-        Task<DeleteResult> DeleteDocument<T>(Guid id);
-
-        /// <summary>
-        /// Gets the MongoDB collection of a given C# Type.
-        /// </summary>
-        /// <typeparam name="T">The type of the documents</typeparam>
-        IMongoCollection<T> GetCollection<T>();
-
-        /// <summary>
-        /// Gets a queryable MongoDB collection.
-        /// </summary>
-        /// <typeparam name="T">The type of the documents</typeparam>
-        IMongoQueryable<T> GetQueryableCollection<T>();
-
-        /// <summary>
-        /// Gets a queryable MongoDB collection as an Array.
-        /// </summary>
-        /// <typeparam name="T">The type of the documents.</typeparam>
-        T[] GetCollectionAsArray<T>();
-
-        /// <summary>
-        /// Gets the documents.
-        /// </summary>
-        /// <typeparam name="T">The type of the documents</typeparam>
-        /// <param name="filter">The filter.</param>
-        IEnumerable<T> GetDocumentsByFilter<T>(Func<T, bool> filter);
-    }
-
-    /// <summary>
     /// Concrete implementation of <see cref="IMongoDbService"/>
     /// </summary>
-    internal class MongoDbService : IMongoDbService
+    public class MongoDbService
     {
         private readonly MongoClient mongoClient;
         private readonly List<MongoTypeMap> collectionTypes;
