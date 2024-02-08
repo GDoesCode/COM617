@@ -1,0 +1,23 @@
+﻿@using COM617.Components
+@using Microsoft.AspNetCore.Authorization
+@attribute [AllowAnonymous]
+@inject NavigationManager navigationManager
+
+<AuthorizeView>
+    <Authorized>
+        <p>Welcome, @context.User.Identity.Name!</p>
+    </Authorized>
+    <NotAuthorized>
+        <p>You are not authorized.</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    // Must perform the redirect after render, so we don't throw navigation exceptions.
+    // NavigationManager can't redirect before the application has fully rendered.
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+            navigationManager.NavigateTo("/login", true);
+    }
+}

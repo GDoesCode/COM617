@@ -16,12 +16,10 @@ namespace COM617.Services.Identity
 
         public UserState(UserService userService) => this.userService = userService;
 
-        private void NotifyStateChanged() => OnChange?.Invoke(this, EventArgs.Empty);
-
         public void SetCurrentUser(User user)
         {
             CurrentUser = user;
-            NotifyStateChanged();
+            OnChange?.Invoke(this, EventArgs.Empty);
         }
 
         public async Task<bool> Save() => await userService!.UpdateUser(CurrentUser!);

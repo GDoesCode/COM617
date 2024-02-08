@@ -35,8 +35,8 @@ namespace COM617.Shared
 
         protected override void OnAfterRender(bool firstRender)
         {
-            if (firstRender)
-                CheckUser();
+            //if (firstRender)
+                //CheckUser();
         }
     }
 }

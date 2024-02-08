@@ -20,13 +20,15 @@ namespace COM617
             // Add services to the container.
             builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
                 .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
+
+
             builder.Services.AddControllersWithViews()
                 .AddMicrosoftIdentityUI();
 
             builder.Services.AddAuthorization(options =>
             {
                 // By default, all incoming requests will be authorized according to the default policy
-                options.FallbackPolicy = options.DefaultPolicy;
+                //options.FallbackPolicy = options.DefaultPolicy;
             });
 
             builder.Services.AddRazorPages();
@@ -38,7 +40,7 @@ namespace COM617
             builder.Services.AddSingleton<UserState>();
 
             // Set MongoDb's guid serializer
-#pragma warning disable CS0618 // This line won't be required in future versions of the MongoDb driver.
+            #pragma warning disable CS0618 // This line won't be required in future versions of the MongoDb driver.
             BsonDefaults.GuidRepresentationMode = GuidRepresentationMode.V3;
             #pragma warning restore CS0618 
             BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
