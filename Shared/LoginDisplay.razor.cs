@@ -9,13 +9,8 @@ namespace COM617.Shared
         private bool collapseProfileMenu { get; set; } = true;
 
         [Inject]
-        private UserState UserState { get; set; } = null!;
+        private UserService? UserService { get; set; }
 
-        private User? User => UserState.CurrentUser;
-
-        protected override void OnInitialized()
-        {
-            UserState.OnChange += async (_, _) => await InvokeAsync(StateHasChanged);
-        }
+        private User? User => UserService!.CurrentUser();
     }
 }

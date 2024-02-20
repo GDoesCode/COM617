@@ -1,4 +1,5 @@
 using COM617.Data;
+using COM617.Data.Identity;
 using COM617.Services;
 using COM617.Services.Identity;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -31,16 +32,30 @@ namespace COM617
                 //options.FallbackPolicy = options.DefaultPolicy;
             });
 
+            builder.Services
+            .AddIdentityCore<User>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+                options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.Password.RequireUppercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireDigit = true;
+            })
+            .AddUserStore<UserStore>().AddSignInManager<SignInManager<User>>();
+            builder.Services.AddTransient<IUserClaimStore<User>, UserStore>();
+
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor()
                 .AddMicrosoftIdentityConsentHandler();
 
             builder.Services.AddSingleton<MongoDbService>();
-            builder.Services.AddSingleton<UserService>();
-            builder.Services.AddSingleton<UserState>();
+            builder.Services.AddScoped<UserService>();
+            builder.Services.AddScoped<SignInService>();
 
             // Set MongoDb's guid serializer
-            #pragma warning disable CS0618 // This line won't be required in future versions of the MongoDb driver.
+#pragma warning disable CS0618 // This line won't be required in future versions of the MongoDb driver.
             BsonDefaults.GuidRepresentationMode = GuidRepresentationMode.V3;
             #pragma warning restore CS0618 
             BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));

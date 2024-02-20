@@ -14,6 +14,7 @@ namespace COM617.Data
         [BsonId]
         public Guid Id { get; set; } = Guid.NewGuid();
         public string Email { get; set; } = string.Empty;
+        public string PasswordHash { get; set; } = string.Empty;
         public string Firstname { get; set; }
         public string Lastname { get; set; }
         public UserRole Role { get; set; }

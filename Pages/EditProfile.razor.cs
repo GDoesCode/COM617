@@ -7,21 +7,11 @@ namespace COM617.Pages
     public partial class EditProfile
     {
         [Inject]
-        private UserState? UserState { get; set; }
-
-        [Inject]
         private NavigationManager? NavigationManager { get; set; }
 
-        private User User => UserState!.CurrentUser!;
+        [Inject]
+        private UserService? UserService { get; set; }
 
-        protected override void OnInitialized()
-        {
-            if (UserState!.CurrentUser is null)
-            {
-                NavigationManager!.NavigateTo("/");
-            }
-        }
-
-        private async Task<bool> Save() => await UserState!.Save();
+        private User User => UserService!.CurrentUser();
     }
 }

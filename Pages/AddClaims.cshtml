@@ -1,0 +1,28 @@
+﻿@page "/AddClaims"
+@using COM617.Services.Identity
+@using COM617.Shared
+@using Microsoft.AspNetCore.Components
+@model COM617.Pages.AddClaimsModel
+@inject UserService UserService
+@inject SignInService SignInService
+@inject NavigationManager NavigationManager
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <title>Applying Permissions</title>
+    </head>
+
+    <body>
+        @{
+            var mongoUser = await UserService.GetUser(User.Identity!.Name!);
+            if (mongoUser is not null)
+            {
+                await SignInService.SignInAsync(mongoUser);
+                NavigationManager!.NavigateTo("/dash");
+            }
+        }
+    </body>
+</html>

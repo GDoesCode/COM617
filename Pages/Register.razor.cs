@@ -14,7 +14,7 @@ namespace COM617.Pages
         private UserService? UserService { get; set; }
 
         [Inject]
-        private UserState? UserState { get; set; }
+        private SignInService? SignInService { get; set; }
 
         private async void RequestAccount(IIdentity identity)
         {
@@ -32,11 +32,11 @@ namespace COM617.Pages
             StateHasChanged();
         }
 
-        private async void CreateAccount(IIdentity identity)
+        private async Task CreateAccount(IIdentity identity)
         {
             var user = new User(identity.Name!, UserRole.Admin);
             accountCreated = await UserService!.CreateUser(user);
-            UserState!.SetCurrentUser(user);
+            await SignInService!.PasswordSignInAsync("", "");
             StateHasChanged();
         }
     }
