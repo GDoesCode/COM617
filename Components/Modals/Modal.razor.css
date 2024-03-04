@@ -1,18 +1,1 @@
-#modal-container {
-  opacity: 0;
-  animation: showing 0.5s;
-  animation-fill-mode: forwards;
-}
-
-@keyframes showing {
-  from {
-    opacity: 0;
-    transform: translateY(1rem);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/*# sourceMappingURL=Modal.razor.css.map */
+#modal-container{opacity:0;animation:showing .5s;animation-fill-mode:forwards}@keyframes showing{from{opacity:0;transform:translateY(1rem)}to{opacity:1;transform:translateY(0)}}/*# sourceMappingURL=Modal.razor.css.map */

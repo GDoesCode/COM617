@@ -40,7 +40,7 @@ namespace COM617.Components.Inputs
             var objRef = DotNetObjectReference.Create(this);
 
             if (firstRender)
-                await JSRuntime!.InvokeVoidAsync("Dropdown.register", $"#combobox-{uniqueId}", $".options-{uniqueId}", objRef);
+                await JSRuntime!.InvokeVoidAsync("Dropdown.register", $"#combobox-{uniqueId}", $"#options-{uniqueId}", objRef);
         }
 
         private void SetInput(string value)
