@@ -1,0 +1,18 @@
+﻿@namespace COM617.Components.Inputs
+@typeparam T
+<select type="text" autocomplete="vehicle-manufacturer" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+    <Virtualize TItem="T" Context="option" Items="Options.ToList()">
+        @if (selected!.Equals(option.ToString()))
+        {
+            <option value="@option" selected="selected">
+                @option
+            </option>
+        }
+        else
+        {
+            <option value="@option">
+                @option
+            </option>
+        }
+    </Virtualize>
+</select>

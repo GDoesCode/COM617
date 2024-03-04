@@ -1,69 +1,50 @@
 ﻿@page "/vm"
+@using COM617.Components.Modals
 @using COM617.Services
 @using Data
 @inject MongoDbService mongoDbService
+@inject ModalService modalService
 
 <PageTitle>Vehicle Management</PageTitle>
 
-<h1>Create Vehicle</h1>
-
-<label>Make</label>
-<input @bind=newVehicle.Make />
-<br/>
-
-<label>Model Name</label>
-<input @bind=newVehicle.ModelName />
-<br />
-
-<label>Model Number</label>
-<input @bind=newVehicle.ModelNumber />
-<br />
-
-<label>Plate</label>
-<input @bind=newVehicle.Plate />
-<br />
-
-<label>Model Name</label>
-<select @bind=newVehicle.Type>
-    <option value="@VehicleType.Car">Car</option>
-    <option value="@VehicleType.CarXL">Car XL (7 Seater)</option>
-    <option value="@VehicleType.Truck">Truck</option>
-    <option value="@VehicleType.Van">Van</option>
-</select>
-<br />
-
-<label>Year</label>
-<select @bind=newVehicle.Year>
-@for (int year = DateTime.Now.Year; year >= DateTime.Now.Year - 100; year--)
-{
-    <option value="@year">@year</option>
-}
-</select>
-<br />
-
-<label>Doors</label>
-<input type="number" @bind=newVehicle.Doors />
-<br />
-
-<label>Seats</label>
-<input type="number" @bind=newVehicle.Seats />
-<br />
-<br/>
-
-<button class="btn btn-primary" @onclick="CreateVehicle">Create Vehicle!</button>
-<br/>
-
-<h1>Vehicle List</h1>
-<ul>
-@foreach (var vehicle in vehicles)
-{
-    <li @onclick="() => DeleteVehicle(vehicle)">
-        @vehicle.Make @vehicle.ModelName (@vehicle.Year)
-    </li>
-}
+<ul role="list" class="divide-y divide-gray-100">
+    @foreach (Vehicle vehicle in vehicles)
+    {
+        <li  class="relative flex justify-between gap-x-6 py-5">
+            <div class="flex min-w-0 gap-x-10">
+                <div class="w-[5rem]">
+                    <img class="" src="/img/vehicles/@vehicle.ImageSrc" alt="">
+                </div>
+                
+                <div class="min-w-0 flex-auto">
+                    <p class="text-sm font-semibold leading-6 text-gray-900">
+                        @vehicle.Manufacturer @vehicle.ModelName (@vehicle.Year)
+                    </p>
+                    <p class="mt-1 flex text-xs leading-5 text-gray-500 relative truncate hover:underline">@(vehicle.Seats > 1 ? $"{vehicle.Seats} seats" : "1 seat")</p>
+                </div>
+            </div>
+            <div class="flex shrink-0 items-center gap-x-4">
+                <div class="hidden sm:flex sm:flex-col sm:items-end">
+                    <p class="text-sm leading-6 text-gray-900">@vehicle.Plate</p>
+                    <div class="mt-1 flex items-center gap-x-1.5">
+                        <div class="flex-none rounded-full bg-emerald-500/20 p-1">
+                            <div class="h-1.5 w-1.5 rounded-full bg-emerald-500"></div>
+                        </div>
+                        <p class="text-xs leading-5 text-gray-500">Available</p>
+                    </div>
+                </div>
+                <svg @onclick="() => modalService.Request(typeof(VehicleModal), vehicle)" class="h-5 w-5 flex-none text-gray-400 cursor-pointer" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+                </svg>
+            </div>
+        </li>
+    }
 </ul>
 
-<button @onclick="StateHasChanged">Refresh</button>
+<button @onclick="CreateVehicle">dev create test vehicle</button>
+
+
+
 
 @code {
     private Vehicle newVehicle = new();
@@ -75,6 +56,17 @@
     }
 
     private async Task CreateVehicle() {
+        newVehicle = new Vehicle()
+            {
+                ModelName = "Focus",
+                Manufacturer = "Ford",
+                Plate = "HF02LYD",
+                Year = 2015,
+                Doors = 5,
+                Seats = 5,
+                Color = "Blue",
+                ImageSrc = "ford-focus.png"
+            };
         await mongoDbService.CreateDocument(newVehicle);
         newVehicle = new();
         StateHasChanged();

@@ -33,6 +33,11 @@ namespace COM617.Shared
                 userState!.SetCurrentUser(user);
         }
 
+        protected override void OnInitialized()
+        {
+            ModalService.ModalUpdated += (_, _) => InvokeAsync(StateHasChanged);
+        }
+
         protected override void OnAfterRender(bool firstRender)
         {
             if (firstRender)
