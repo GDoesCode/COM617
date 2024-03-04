@@ -26,10 +26,20 @@ namespace COM617.Data
         public int Year { get; set; }
         public int Doors { get; set; }
         public int Seats { get; set; }
+        public bool Booked { get; set; } = false;
 
-        public Vehicle()
+        public Vehicle(string make, string modelName, string modelNumber, string plate, string color, VehicleType type, int year, int doors, int seats)
         {
             Id = Guid.NewGuid();
+            Make = make;
+            ModelName = modelName;
+            ModelNumber = modelNumber;
+            Plate = plate;
+            Color = Color;
+            Type = type;
+            Year = year;
+            Doors = doors;
+            Seats = seats;
         }
     }
 }
