@@ -366,4 +366,4 @@ FodyWeavers.xsd
 /wwwroot/css/output.css
 
 # Sass - auto-generated CSS
-/Components/**/*.css
+/Components/**/*.razor.css
