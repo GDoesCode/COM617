@@ -9,6 +9,8 @@ namespace COM617.Services
         private List<Vehicle> vehicles;
         private MongoDbService mongoDbService;
 
+        public event EventHandler? VehiclesChanged;
+
         public VehicleService(MongoDbService mongoDbService)
         {
             this.mongoDbService = mongoDbService;
@@ -19,13 +21,18 @@ namespace COM617.Services
         {
             var manufacturers = new List<string>();
             if (modelName == "")
+            {
                 foreach (var vehicle in vehicles)
                     if (!manufacturers.Contains(vehicle.Manufacturer))
                         manufacturers.Add(vehicle.Manufacturer);
+            }
             else
-                foreach (var vehicleM in vehicles)
+            {
+                foreach (var vehicleM in vehicles.Where(v => v.ModelName.ToLower() == modelName.ToLower()))
                     if (!manufacturers.Contains(vehicleM.Manufacturer))
                         manufacturers.Add(vehicleM.Manufacturer);
+            }
+                
             return manufacturers;
         }
 
@@ -33,14 +40,37 @@ namespace COM617.Services
         {
             var models = new List<string>();
             if (manufacturer == "")
+            {
                 foreach (var vehicle in vehicles)
                     if (!models.Contains(vehicle.ModelName))
                         models.Add(vehicle.ModelName);
+            }
             else
-                foreach (var vehicleM in vehicles.Where(v => v.Manufacturer == manufacturer))
+            {
+                foreach (var vehicleM in vehicles.Where(v => v.Manufacturer.ToLower() == manufacturer.ToLower()))
                     if (!models.Contains(vehicleM.ModelName))
                         models.Add(vehicleM.ModelName);
+            }
+                
             return models;
+        }
+
+        public async Task UpdateVehicle(Vehicle vehicle)
+        {
+            await mongoDbService.ReplaceDocument(vehicle.Id, vehicle);
+            VehiclesChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        public async Task CreateVehicle(Vehicle vehicle)
+        {
+            await mongoDbService.CreateDocument(vehicle);
+            VehiclesChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        public async Task DeleteVehicle(Vehicle vehicle)
+        {
+            await mongoDbService.DeleteDocument<Vehicle>(vehicle.Id);
+            VehiclesChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

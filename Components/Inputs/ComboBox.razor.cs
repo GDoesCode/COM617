@@ -8,7 +8,6 @@ namespace COM617.Components.Inputs
     public partial class ComboBox<T>
     {
         private string input = string.Empty;
-        private string Input { get { return input; } set => SetInput(value); }
         private bool comboVisible;
         private string uniqueId = Guid.NewGuid().ToString();
         private IEnumerable<T> FilteredOptions => Options.Where(Filter!);
@@ -26,11 +25,11 @@ namespace COM617.Components.Inputs
         public T? Selection { get; set; }
 
         [Parameter]
-        public EventHandler<string>? InputChanged { get; set; }
+        public EventCallback<string> InputChanged { get; set; }
 
         protected override void OnInitialized()
         {
-            Filter ??= x => x!.ToString()!.Contains(input);
+            Filter ??= x => x!.ToString()!.ToLower().Contains(input.ToLower()) || input.ToString() == "";
             input = Selection?.ToString()!;
         }
 
@@ -43,11 +42,12 @@ namespace COM617.Components.Inputs
                 await JSRuntime!.InvokeVoidAsync("Dropdown.register", $"#combobox-{uniqueId}", $"#options-{uniqueId}", objRef);
         }
 
-        private void SetInput(string value)
+        private async Task SetInput(string value)
         {
             input = value;
+            comboVisible = false;
             StateHasChanged();
-            InputChanged?.Invoke(this, input);
+            await InputChanged.InvokeAsync(input);
         }
 
         [JSInvokable("OnCloseEventReceived")]

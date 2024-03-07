@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace Dstl.Afst.UI.Components.Modals
+namespace COM617.Components.Modals
 {
     public partial class Modal
     {
