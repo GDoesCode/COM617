@@ -71,7 +71,7 @@ namespace COM617.Data.Identity
         /// <inheritdoc />
         public async Task<User?> FindByIdAsync(string userId, CancellationToken cancellationToken)
         {
-            return await Task.FromResult(identityCollection.FirstOrDefault(x => x.Id == Guid.Parse(userId)));
+            return await Task.FromResult(identityCollection.FirstOrDefault(x => x.Id == userId));
         }
 
 
@@ -84,9 +84,9 @@ namespace COM617.Data.Identity
         /// <inheritdoc />
         public async Task<string?> GetPasswordHashAsync(User user, CancellationToken cancellationToken)
         {
-            if (identityCollection.FirstOrDefault(x => x == user) != null)
+            if (identityCollection.FirstOrDefault(x => x.Id == user.Id) != null)
             {
-                return await Task.FromResult(identityCollection.FirstOrDefault(x => x == user)!.PasswordHash);
+                return await Task.FromResult(identityCollection.FirstOrDefault(x => x.Id == user.Id)!.PasswordHash);
             }
             return null!;
         }
@@ -94,9 +94,9 @@ namespace COM617.Data.Identity
         /// <inheritdoc />
         public async Task<string> GetUserIdAsync(User user, CancellationToken cancellationToken)
         {
-            if (identityCollection.FirstOrDefault(x => x == user) != null)
+            if (identityCollection.FirstOrDefault(x => x.Id == user.Id) != null)
             {
-                return await Task.FromResult(identityCollection.FirstOrDefault(x => x == user)!.Id.ToString());
+                return await Task.FromResult(identityCollection.FirstOrDefault(x => x.Id == user.Id)!.Id.ToString());
             }
             return null!;
         }

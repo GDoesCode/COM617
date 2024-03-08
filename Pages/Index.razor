@@ -1,11 +1,10 @@
 ﻿@page "/"
 @layout EmptyLayout
-
+@attribute [AllowAnonymous]
 <PageTitle>Loading...</PageTitle>
 
 <AuthorizeView>
     <Authorized>
-        <p>Welcome, @context.User.Identity.Name!</p>
     </Authorized>
     <NotAuthorized>
         <COM617.Components.LoginRedirect/>

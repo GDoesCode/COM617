@@ -32,9 +32,6 @@ namespace COM617.Data.Identity
                 claims.Add(new Claim(ClaimTypes.Role, Enum.GetName(typeof(UserRole), i)!));
             }
 
-            claims.Add(new Claim(ClaimTypes.GivenName, user.Firstname));
-            claims.Add(new Claim(ClaimTypes.Surname, user.Lastname));
-
             return claims;
         }
 

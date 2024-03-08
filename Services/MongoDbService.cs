@@ -81,6 +81,12 @@ namespace COM617.Services
             var filter = Builders<T>.Filter.Eq("_id", id);
             return await GetCollection<T>().ReplaceOneAsync(filter, replacement);
         }
+
+        public async Task<ReplaceOneResult> ReplaceDocument<T>(string id, T replacement)
+        {
+            var filter = Builders<T>.Filter.Eq("_id", id);
+            return await GetCollection<T>().ReplaceOneAsync(filter, replacement);
+        }
     }
 
     /// <summary>

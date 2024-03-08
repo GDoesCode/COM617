@@ -2,8 +2,11 @@ using COM617.Data;
 using COM617.Data.Identity;
 using COM617.Services;
 using COM617.Services.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using MongoDB.Bson;
@@ -20,7 +23,14 @@ namespace COM617
 
             // Add services to the container.
             builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-                .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
+                .AddCookie(IdentityConstants.ApplicationScheme, delegate (CookieAuthenticationOptions o) {
+                    o.LoginPath = new PathString("/Account/Login");
+                    CookieAuthenticationEvents events1 = new CookieAuthenticationEvents();
+                    events1.OnValidatePrincipal = new Func<CookieValidatePrincipalContext, Task>(SecurityStampValidator.ValidatePrincipalAsync);
+                    o.Events = events1;
+                })
+
+            .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
 
 
             builder.Services.AddControllersWithViews()
@@ -45,6 +55,13 @@ namespace COM617
             })
             .AddUserStore<UserStore>().AddSignInManager<SignInManager<User>>();
             builder.Services.AddTransient<IUserClaimStore<User>, UserStore>();
+
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+                options.LoginPath = "/Login";
+                options.SlidingExpiration = true;
+            });
 
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor()
@@ -85,6 +102,54 @@ namespace COM617
             app.MapFallbackToPage("/_Host");
 
             app.Run();
+        }
+
+        
+    }
+
+    public static class Startup
+    {
+        public static IdentityBuilder AddIdentity<TUser, TRole>(this IServiceCollection services, Action<IdentityOptions> setupAction) where TUser : class where TRole : class
+        {
+            services.AddAuthentication(delegate (AuthenticationOptions options) {
+                options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
+                options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
+                options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+            }).AddCookie(IdentityConstants.ApplicationScheme, delegate (CookieAuthenticationOptions o) {
+                o.LoginPath = new PathString("/Account/Login");
+                CookieAuthenticationEvents events1 = new CookieAuthenticationEvents();
+                events1.OnValidatePrincipal = new Func<CookieValidatePrincipalContext, Task>(SecurityStampValidator.ValidatePrincipalAsync);
+                o.Events = events1;
+            }).AddCookie(IdentityConstants.ExternalScheme, delegate (CookieAuthenticationOptions o) {
+                o.Cookie.Name = IdentityConstants.ExternalScheme;
+                o.ExpireTimeSpan = TimeSpan.FromMinutes((double)5.0);
+            }).AddCookie(IdentityConstants.TwoFactorRememberMeScheme, delegate (CookieAuthenticationOptions o) {
+                o.Cookie.Name = IdentityConstants.TwoFactorRememberMeScheme;
+                CookieAuthenticationEvents events1 = new CookieAuthenticationEvents();
+                events1.OnValidatePrincipal = new Func<CookieValidatePrincipalContext, Task>(SecurityStampValidator.ValidateAsync<ITwoFactorSecurityStampValidator>);
+                o.Events = events1;
+            }).AddCookie(IdentityConstants.TwoFactorUserIdScheme, delegate (CookieAuthenticationOptions o) {
+                o.Cookie.Name = IdentityConstants.TwoFactorUserIdScheme;
+                o.ExpireTimeSpan = TimeSpan.FromMinutes((double)5.0);
+            });
+            services.AddHttpContextAccessor();
+            services.TryAddScoped<IUserValidator<TUser>, UserValidator<TUser>>();
+            services.TryAddScoped<IPasswordValidator<TUser>, PasswordValidator<TUser>>();
+            services.TryAddScoped<IPasswordHasher<TUser>, PasswordHasher<TUser>>();
+            services.TryAddScoped<ILookupNormalizer, UpperInvariantLookupNormalizer>();
+            services.TryAddScoped<IRoleValidator<TRole>, RoleValidator<TRole>>();
+            services.TryAddScoped<IdentityErrorDescriber>();
+            services.TryAddScoped<ISecurityStampValidator, SecurityStampValidator<TUser>>();
+            services.TryAddScoped<ITwoFactorSecurityStampValidator, TwoFactorSecurityStampValidator<TUser>>();
+            services.TryAddScoped<IUserClaimsPrincipalFactory<TUser>, UserClaimsPrincipalFactory<TUser, TRole>>();
+            services.TryAddScoped<UserManager<TUser>>();
+            services.TryAddScoped<SignInManager<TUser>>();
+            services.TryAddScoped<RoleManager<TRole>>();
+            if (setupAction != null)
+            {
+                services.Configure<IdentityOptions>(setupAction);
+            }
+            return new IdentityBuilder(typeof(TUser), typeof(TRole), services);
         }
     }
 }

@@ -9,20 +9,19 @@ namespace COM617.Data
     /// </summary>
     /// <seealso cref="IdentityUser" />
     [MongoTypeMap("com617", "Users")]
-    public class User
+    public class User : IdentityUser
     {
-        [BsonId]
-        public Guid Id { get; set; } = Guid.NewGuid();
-        public string Email { get; set; } = string.Empty;
-        public string PasswordHash { get; set; } = string.Empty;
-        public string Firstname { get; set; }
-        public string Lastname { get; set; }
         public UserRole Role { get; set; }
 
-        public User(string email, UserRole role = UserRole.Standard, string firstName = "", string lastName = "")
+        public string Firstname { get; set; }
+
+        public string Lastname { get; set; }
+
+        public User(string email, string firstName, string lastName, UserRole role = UserRole.Standard)
         {
             Role = role;
             Email = email;
+            Id = Email;
             Firstname = firstName;
             Lastname = lastName;
         }
@@ -38,8 +37,6 @@ namespace COM617.Data
             Role = role;
             return true;
         }
-
-        public override string ToString() => $"{Firstname} {Lastname}";
     }
 
     /// <summary>

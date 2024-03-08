@@ -74,12 +74,12 @@ namespace COM617.Services.Identity
         public string CurrentUserEmail => GetCurrentUserEmail().GetAwaiter().GetResult();
 
         /// <inheritdoc />
-        public string FullName(Guid? id)
+        public string FullName(string? id)
         {
             if (id == null)
                 return string.Empty;
 
-            var user = GetUserById(id.Value);
+            var user = GetUserById(id);
             return user.ToString();
         }
 
@@ -92,7 +92,7 @@ namespace COM617.Services.Identity
             return $"{firstname} {secondname}";
         }
 
-        private User GetUserById(Guid id) => userStore!.CurrentUsers.First(x => x.Id == id);
+        private User GetUserById(string id) => userStore!.CurrentUsers.First(x => x.Id == id);
 
         private async Task<string> GetCurrentUserEmail()
         {

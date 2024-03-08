@@ -25,7 +25,7 @@ namespace COM617.Pages
             }
             else
             {
-                var newUser = new User(identity.Name!);
+                var newUser = new User(identity.Name!, "Test", "Test");
                 await UserService.CreateUserApplication(new UserApplication(newUser));
                 accountRequested = true;
             }
@@ -34,7 +34,7 @@ namespace COM617.Pages
 
         private async Task CreateAccount(IIdentity identity)
         {
-            var user = new User(identity.Name!, UserRole.Admin);
+            var user = new User(identity.Name!, "Test", "Test", UserRole.Admin);
             accountCreated = await UserService!.CreateUser(user);
             await SignInService!.PasswordSignInAsync("", "");
             StateHasChanged();

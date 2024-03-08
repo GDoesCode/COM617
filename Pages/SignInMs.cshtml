@@ -1,0 +1,14 @@
+﻿@page "/SignInMs"
+@using COM617.Services.Identity
+@using Microsoft.AspNetCore.Authorization
+@model COM617.Pages.SignInMsModel
+@inject SignInService SignInService
+@attribute [AllowAnonymous]
+@{
+    Layout = "/Shared/_EmptyLayout.cshtml";
+}
+
+<form action="#" method="post">
+    <button type="submit" >Logout</button>
+    @Html.AntiForgeryToken()
+</form>

@@ -20,7 +20,7 @@ namespace COM617.Data.Identity
         /// <summary>
         /// Gets the user identifier.
         /// </summary>
-        public Guid UserId { get; private set; }
+        public string UserId { get; private set; }
 
         /// <summary>
         /// Gets the claims.
@@ -32,7 +32,7 @@ namespace COM617.Data.Identity
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <param name="claims">The claims.</param>
-        public UserClaim(Guid userId, IEnumerable<Claim> claims)
+        public UserClaim(string userId, IEnumerable<Claim> claims)
         {
             UserId = userId;
             Claims = claims.ToArray();

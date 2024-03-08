@@ -72,7 +72,7 @@ namespace COM617.Services.Identity
         /// </summary>
         public async Task SignOutAsync(ClaimsPrincipal principal)
         {
-            await userClaimStore.RemoveClaimsAsync(userService.CurrentUser(), principal.Claims, CancellationToken.None);
+            //await userClaimStore.RemoveClaimsAsync(userService.CurrentUser(), principal.Claims, CancellationToken.None);
             await signInManager!.SignOutAsync();
         }
     }
