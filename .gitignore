@@ -364,3 +364,7 @@ FodyWeavers.xsd
 
 # Tailwind - auto-generated CSS
 /wwwroot/css/output.css
+
+# Sass - auto-generated CSS
+/Components/*/*.razor.css
+/Components/*/*.razor.css.map

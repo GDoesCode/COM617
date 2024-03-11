@@ -2,10 +2,39 @@
 @using COM617.Components.Modals
 @using COM617.Services
 @using Data
+@using COM617.Components.Inputs
 @inject MongoDbService mongoDbService
 @inject ModalService modalService
+@namespace COM617.Pages
 
 <PageTitle>Vehicle Management</PageTitle>
+
+<header>
+    <div class="max-w-7xl">
+        <h1 class="text-3xl font-bold text-gray-900">Vehicle Management</h1>
+    </div>
+</header>
+
+<div class="fixed end-6 bottom-6 group">
+    <div class="@(isOpen ? "" : "hidden") flex flex-col items-center mb-4 space-y-2">
+        <button @onclick="() => CreateVehicle()" type="button" data-tooltip-target="tooltip-share" data-tooltip-placement="left" class="flex justify-center items-center w-[52px] h-[52px] text-gray-500 hover:text-gray-900 bg-white rounded-full border border-gray-200 dark:border-gray-600 shadow-sm dark:hover:text-white dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400">
+            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
+            </svg>
+            <span class="sr-only">Add Vehicle</span>
+        </button>
+        <div role="tooltip" class="absolute z-10 invisible inline-block w-auto px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+            Add Vehicle
+        </div>
+    </div>
+    <button @onclick="() => isOpen = !isOpen" type="button" aria-controls="speed-dial-menu-default" aria-expanded="false" class="flex items-center justify-center text-white bg-blue-700 rounded-full w-14 h-14 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800">
+        <svg class="w-5 h-5 transition-transform @(isOpen ? "rotate-45" : "")" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
+        </svg>
+        <span class="sr-only">Open actions menu</span>
+    </button>
+</div>
+
 
 <ul role="list" class="divide-y divide-gray-100">
     @foreach (Vehicle vehicle in vehicles)
@@ -33,47 +62,10 @@
                         <p class="text-xs leading-5 text-gray-500">Available</p>
                     </div>
                 </div>
-                <svg @onclick="() => modalService.Request(typeof(VehicleModal), vehicle)" class="h-5 w-5 flex-none text-gray-400 cursor-pointer" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <svg @onclick="() => EditVehicle(vehicle)" class="h-5 w-5 flex-none text-gray-400 cursor-pointer" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                     <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
                 </svg>
             </div>
         </li>
     }
 </ul>
-
-<button @onclick="CreateVehicle">dev create test vehicle</button>
-
-
-
-
-@code {
-    private Vehicle newVehicle = new();
-    private List<Vehicle> vehicles => GetVehicles();
-
-    private List<Vehicle> GetVehicles()
-    {
-        return mongoDbService.GetDocumentsByFilter<Vehicle>(vehicle => vehicle.Id != Guid.Empty).ToList();
-    }
-
-    private async Task CreateVehicle() {
-        newVehicle = new Vehicle()
-            {
-                ModelName = "Focus",
-                Manufacturer = "Ford",
-                Plate = "HF02LYD",
-                Year = 2015,
-                Doors = 5,
-                Seats = 5,
-                Color = "Blue",
-                ImageSrc = "ford-focus.png"
-            };
-        await mongoDbService.CreateDocument(newVehicle);
-        newVehicle = new();
-        StateHasChanged();
-    }
-
-    private async Task DeleteVehicle(Vehicle vehicle) {
-        await mongoDbService.DeleteDocument<Vehicle>(vehicle.Id);
-        StateHasChanged();
-    }
-}

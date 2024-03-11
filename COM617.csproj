@@ -20,5 +20,5 @@
   <ItemGroup>
     <Folder Include="wwwroot\img\vehicles\types\" />
   </ItemGroup>
-
+  
 </Project>

@@ -1,12 +1,14 @@
 ﻿using COM617.Data;
 using COM617.Services;
 using Microsoft.AspNetCore.Components;
+using System.Reflection;
 
 namespace COM617.Components.Modals
 {
     public partial class VehicleModal
     {
-        private Vehicle vehicle = new();
+        private Vehicle vehicle = null!;
+        private readonly PropertyInfo[] properties = typeof(Vehicle).GetProperties();
 
         private enum VehicleFormError
         {
@@ -36,47 +38,53 @@ namespace COM617.Components.Modals
         /// </summary>
         private bool Mode => ModalService!.DataIn is null;
 
-        private Vehicle Vehicle
+        protected override void OnInitialized()
         {
-            get
-            {
-                if (ModalService!.DataIn is null) // Creating new Vehicle
-                    return vehicle;
-                else
-                    return (Vehicle) ModalService!.DataIn!; // Editing current vehicle
-            }
+            if (ModalService!.DataIn is null) // Creating new Vehicle
+                vehicle = new();
+            else
+                vehicle = (Vehicle)ModalService!.DataIn!; // Editing current vehicle
         }
 
-        private void Create()
+        private void ChangeValue(string propertyName, object value)
         {
-            if (Vehicle!.Type == VehicleType.Undefined)
-                ShowError(VehicleFormError.TypeInvalid);
-            else if (Vehicle!.Year < 1900)
-                ShowError(VehicleFormError.YearInvalid);
-            else if (Vehicle!.Manufacturer == string.Empty)
-                ShowError(VehicleFormError.MakeInvalid);
-            else if (Vehicle!.Seats == 0)
-                ShowError(VehicleFormError.SeatsInvalid);
-            else if (Vehicle!.Doors == 0)
-                ShowError(VehicleFormError.DoorsInvalid);
+            properties.First(p => p.Name == propertyName).SetValue(vehicle, value);
+            StateHasChanged();
+        }
 
-            ModalService!.Finish(vehicle);
+        private async Task Delete()
+        {
+            await VehicleService.DeleteVehicle(vehicle);
+            ModalService!.Close();
+        }
+
+
+        private async Task Create()
+        {
+            if (vehicle!.Type == VehicleType.Undefined)
+                ShowError(VehicleFormError.TypeInvalid);
+            else if (vehicle!.Year < 1900)
+                ShowError(VehicleFormError.YearInvalid);
+            else if (vehicle!.Manufacturer == string.Empty)
+                ShowError(VehicleFormError.MakeInvalid);
+            else if (vehicle!.Seats == 0)
+                ShowError(VehicleFormError.SeatsInvalid);
+            else if (vehicle!.Doors == 0)
+                ShowError(VehicleFormError.DoorsInvalid);
+            else
+            {
+                if (ModalService!.DataIn is null)
+                    await VehicleService.CreateVehicle(vehicle);
+                else
+                    await VehicleService.UpdateVehicle(vehicle);
+                ModalService!.Finish(vehicle);
+            }
+                
         }
 
         private void ShowError(VehicleFormError error)
         {
-            ModalService!.Request(typeof(ErrorMessageModal), (VehicleFormErrorMessage[error], this, vehicle));
-        }
-
-        private Dictionary<VehicleType, string> GetVehicleTypeOptions()
-        {
-            Dictionary<VehicleType, string> options = new Dictionary<VehicleType, string>();
-            foreach (var vehicleType in Enum.GetValues<VehicleType>().ToList())
-            {
-
-            }
-            
-            return options;
+            ModalService!.Request(typeof(ErrorMessageModal), new ErrorMessageInfo(VehicleFormErrorMessage[error], this, vehicle));
         }
     }
 }

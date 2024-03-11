@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace COM617.Components.Inputs
 {
@@ -8,6 +9,10 @@ namespace COM617.Components.Inputs
         private bool highlighted;
         private bool wasSelected;
         private T? selected;
+        private string uniqueId = Guid.NewGuid().ToString();
+
+        [Inject]
+        private IJSRuntime JSRuntime { get; set; } = null!;
 
         /// <summary>
         /// The objects to use as options in the select drop-down.
@@ -56,6 +61,7 @@ namespace COM617.Components.Inputs
 
         private void Select(T? value)
         {
+            isOpen = false;
             wasSelected = true;
             selected = value;
             SelectionChanged.InvokeAsync(value!);
@@ -73,11 +79,27 @@ namespace COM617.Components.Inputs
             wasSelected = false;
         }
 
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            await base.OnAfterRenderAsync(firstRender);
+            var objRef = DotNetObjectReference.Create(this);
+
+            if (firstRender)
+                await JSRuntime!.InvokeVoidAsync("Dropdown.register", $"#box-{uniqueId}", $"#dropdown-{uniqueId}", objRef);
+        }
+
         /// <summary>
         /// Rerenders the Simpledropdown.
         /// </summary>
         public void Reset()
         {
+            StateHasChanged();
+        }
+
+        [JSInvokable("OnCloseEventReceived")]
+        public void OnCloseEventReceived()
+        {
+            isOpen = false;
             StateHasChanged();
         }
     }
