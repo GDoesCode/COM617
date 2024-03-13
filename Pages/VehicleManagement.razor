@@ -1,87 +1,71 @@
 ﻿@page "/vm"
+@using COM617.Components.Modals
 @using COM617.Services
 @using Data
+@using COM617.Components.Inputs
 @inject MongoDbService mongoDbService
+@inject ModalService modalService
+@namespace COM617.Pages
 
 <PageTitle>Vehicle Management</PageTitle>
 
-<h1>Create Vehicle</h1>
+<header>
+    <div class="max-w-7xl">
+        <h1 class="text-3xl font-bold text-gray-900">Vehicle Management</h1>
+    </div>
+</header>
 
-<label>Make</label>
-<input @bind=newVehicle.Make />
-<br/>
+<div class="fixed end-6 bottom-6 group">
+    <div class="@(isOpen ? "" : "hidden") flex flex-col items-center mb-4 space-y-2">
+        <button @onclick="() => CreateVehicle()" type="button" data-tooltip-target="tooltip-share" data-tooltip-placement="left" class="flex justify-center items-center w-[52px] h-[52px] text-gray-500 hover:text-gray-900 bg-white rounded-full border border-gray-200 dark:border-gray-600 shadow-sm dark:hover:text-white dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400">
+            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
+            </svg>
+            <span class="sr-only">Add Vehicle</span>
+        </button>
+        <div role="tooltip" class="absolute z-10 invisible inline-block w-auto px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+            Add Vehicle
+        </div>
+    </div>
+    <button @onclick="() => isOpen = !isOpen" type="button" aria-controls="speed-dial-menu-default" aria-expanded="false" class="flex items-center justify-center text-white bg-blue-700 rounded-full w-14 h-14 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800">
+        <svg class="w-5 h-5 transition-transform @(isOpen ? "rotate-45" : "")" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
+        </svg>
+        <span class="sr-only">Open actions menu</span>
+    </button>
+</div>
 
-<label>Model Name</label>
-<input @bind=newVehicle.ModelName />
-<br />
 
-<label>Model Number</label>
-<input @bind=newVehicle.ModelNumber />
-<br />
-
-<label>Plate</label>
-<input @bind=newVehicle.Plate />
-<br />
-
-<label>Model Name</label>
-<select @bind=newVehicle.Type>
-    <option value="@VehicleType.Car">Car</option>
-    <option value="@VehicleType.CarXL">Car XL (7 Seater)</option>
-    <option value="@VehicleType.Truck">Truck</option>
-    <option value="@VehicleType.Van">Van</option>
-</select>
-<br />
-
-<label>Year</label>
-<select @bind=newVehicle.Year>
-@for (int year = DateTime.Now.Year; year >= DateTime.Now.Year - 100; year--)
-{
-    <option value="@year">@year</option>
-}
-</select>
-<br />
-
-<label>Doors</label>
-<input type="number" @bind=newVehicle.Doors />
-<br />
-
-<label>Seats</label>
-<input type="number" @bind=newVehicle.Seats />
-<br />
-<br/>
-
-<button class="btn btn-primary" @onclick="CreateVehicle">Create Vehicle!</button>
-<br/>
-
-<h1>Vehicle List</h1>
-<ul>
-@foreach (var vehicle in vehicles)
-{
-    <li @onclick="() => DeleteVehicle(vehicle)">
-        @vehicle.Make @vehicle.ModelName (@vehicle.Year)
-    </li>
-}
-</ul>
-
-<button @onclick="StateHasChanged">Refresh</button>
-
-@code {
-    private Vehicle newVehicle = new();
-    private List<Vehicle> vehicles => GetVehicles();
-
-    private List<Vehicle> GetVehicles()
+<ul role="list" class="divide-y divide-gray-100">
+    @foreach (Vehicle vehicle in vehicles)
     {
-        return mongoDbService.GetDocumentsByFilter<Vehicle>(vehicle => vehicle.Id != Guid.Empty).ToList();
+        <li  class="relative flex justify-between gap-x-6 py-5">
+            <div class="flex min-w-0 gap-x-10">
+                <div class="w-[5rem]">
+                    <img class="" src="/img/vehicles/@vehicle.ImageSrc" alt="">
+                </div>
+                
+                <div class="min-w-0 flex-auto">
+                    <p class="text-sm font-semibold leading-6 text-gray-900">
+                        @vehicle.Manufacturer @vehicle.ModelName (@vehicle.Year)
+                    </p>
+                    <p class="mt-1 flex text-xs leading-5 text-gray-500 relative truncate hover:underline">@(vehicle.Seats > 1 ? $"{vehicle.Seats} seats" : "1 seat")</p>
+                </div>
+            </div>
+            <div class="flex shrink-0 items-center gap-x-4">
+                <div class="hidden sm:flex sm:flex-col sm:items-end">
+                    <p class="text-sm leading-6 text-gray-900">@vehicle.Plate</p>
+                    <div class="mt-1 flex items-center gap-x-1.5">
+                        <div class="flex-none rounded-full bg-emerald-500/20 p-1">
+                            <div class="h-1.5 w-1.5 rounded-full bg-emerald-500"></div>
+                        </div>
+                        <p class="text-xs leading-5 text-gray-500">Available</p>
+                    </div>
+                </div>
+                <svg @onclick="() => EditVehicle(vehicle)" class="h-5 w-5 flex-none text-gray-400 cursor-pointer" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+                </svg>
+            </div>
+        </li>
     }
-
-    private async Task CreateVehicle() {
-        await mongoDbService.CreateDocument(newVehicle);
-        newVehicle = new();
-        StateHasChanged();
-    }
-
-    private async Task DeleteVehicle(Vehicle vehicle) {
-        await mongoDbService.DeleteDocument<Vehicle>(vehicle.Id);
-        StateHasChanged();
-    }
-}
+</ul>

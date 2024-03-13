@@ -34,16 +34,25 @@ namespace COM617
                 .AddMicrosoftIdentityConsentHandler();
 
             builder.Services.AddSingleton<MongoDbService>();
-            builder.Services.AddSingleton<UserService>();
-            builder.Services.AddSingleton<UserState>();
+            builder.Services.AddSingleton<VehicleService>();
+
+            builder.Services.AddScoped<ModalService>();
+            builder.Services.AddScoped<UserService>();
+            builder.Services.AddScoped<UserState>();
 
             // Set MongoDb's guid serializer
 #pragma warning disable CS0618 // This line won't be required in future versions of the MongoDb driver.
             BsonDefaults.GuidRepresentationMode = GuidRepresentationMode.V3;
-            #pragma warning restore CS0618 
+#pragma warning restore CS0618 
             BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
 
+#if DEBUG
+            builder.Services.AddSassCompiler();
+#endif
+
             var app = builder.Build();
+
+            
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

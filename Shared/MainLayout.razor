@@ -1,5 +1,7 @@
 ﻿@inherits LayoutComponentBase
 @using COM617.Components.Nav
+@using COM617.Services
+@inject ModalService ModalService
 
 <PageTitle>COM617</PageTitle>
 
@@ -9,6 +11,13 @@
             SetIdentity(context.User.Identity!);
         }
 
+        @if (ModalService!.ModalShowing)
+        {
+            <div>
+                <div id="blurred-background" class="blur vignette z-[59] fixed inset-0 bg-gray-600 bg-opacity-75 transition-opacity"></div>
+                <DynamicComponent Type="ModalService.ModalType" />
+            </div>
+        }
         <div class="h-full bg-white">
             <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
             <MobileNavbar @ref="mobileNavbarRef" />

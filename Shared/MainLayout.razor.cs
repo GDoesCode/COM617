@@ -26,11 +26,18 @@ namespace COM617.Shared
         private void CheckUser()
         {
             var user = userService!.GetUser(identity!.Name!);
+            if (userState!.CurrentUser == user)
+                return;
 
             if (user is null)
                 navigationManager!.NavigateTo("/register");
             else
-                userState!.SetCurrentUser(user);
+                userState.SetCurrentUser(user);
+        }
+
+        protected override void OnInitialized()
+        {
+            ModalService.ModalUpdated += (_, _) => InvokeAsync(StateHasChanged);
         }
 
         protected override void OnAfterRender(bool firstRender)
