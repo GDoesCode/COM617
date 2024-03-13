@@ -16,6 +16,7 @@ namespace COM617.Data
         public string Email { get; set; } = string.Empty;
         public string Firstname { get; set; }
         public string Lastname { get; set; }
+        public string Title { get; set; }
         public UserRole Role { get; set; }
 
         public User(string email, UserRole role = UserRole.Standard, string firstName = "", string lastName = "")

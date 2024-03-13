@@ -64,12 +64,14 @@ namespace COM617.Services
         public async Task CreateVehicle(Vehicle vehicle)
         {
             await mongoDbService.CreateDocument(vehicle);
+            vehicles.Add(vehicle);
             VehiclesChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public async Task DeleteVehicle(Vehicle vehicle)
         {
             await mongoDbService.DeleteDocument<Vehicle>(vehicle.Id);
+            vehicles.Remove(vehicle);
             VehiclesChanged?.Invoke(this, EventArgs.Empty);
         }
     }
