@@ -20,7 +20,5 @@ namespace COM617.Components.Inputs
                 StateHasChanged();
             }
         }
-
-
     }
 }

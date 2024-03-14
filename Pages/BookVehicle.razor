@@ -1,4 +1,4 @@
-﻿@page "/vm"
+﻿@page "/book_vehicle"
 @using COM617.Components.Modals
 @using COM617.Services
 @using Data
@@ -46,7 +46,7 @@
                 </div>
                 
                 <div class="min-w-0 flex-auto">
-                    <p class="text-sm font-semibold leading-6 text-gray-900" @onclick="() => EditVehicle(vehicle)">
+                    <p class="text-sm font-semibold leading-6 text-gray-900">
                         @vehicle.Manufacturer @vehicle.ModelName (@vehicle.Year)
                     </p>
                     <p class="mt-1 flex text-xs leading-5 text-gray-500 relative truncate hover:underline">@(vehicle.Seats > 1 ? $"{vehicle.Seats} seats" : "1 seat")</p>

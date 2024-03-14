@@ -41,18 +41,9 @@ namespace COM617.Data
         public int Seats { get; set; }
         public bool Booked { get; set; } = false;
 
-        public Vehicle(string make, string modelName, string modelNumber, string plate, string color, VehicleType type, int year, int doors, int seats)
+        public Vehicle()
         {
             Id = Guid.NewGuid();
-            Make = make;
-            ModelName = modelName;
-            ModelNumber = modelNumber;
-            Plate = plate;
-            Color = Color;
-            Type = type;
-            Year = year;
-            Doors = doors;
-            Seats = seats;
         }
     }
 }
