@@ -1,0 +1,53 @@
+﻿@page "/ubs"
+@using COM617.Components.Inputs
+@using COM617.Data
+
+<div class="flex gap-x-2">
+    <div>
+        <label for="search" class="block text-sm font-medium leading-6 text-gray-900">Quick Search</label>
+        <div class="relative mt-2 flex items-center">
+            <input type="text" name="search" id="search" @oninput="(changeEvent) => InputChanged(changeEvent.Value!.ToString()!)" class="block w-full rounded-md border-0 py-1.5 pr-14 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+            <div class="absolute inset-y-0 right-0 flex py-1.5 pr-1.5">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-800">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                </svg>
+            </div>
+        </div>
+    </div>
+    <SelectDropdown T="VehicleType" Options="Enum.GetValues<VehicleType>().ToList()" SelectionChanged="">
+
+    </SelectDropdown>
+</div>
+<div>
+    @foreach (Vehicle vehicle in vehicles)
+    {
+        <li class="relative flex justify-between gap-x-6 py-5">
+            <div class="flex min-w-0 gap-x-10">
+                <div class="w-[5rem]">
+                    <img class="" src="/img/vehicles/@vehicle.ImageSrc" alt="">
+                </div>
+
+                <div class="min-w-0 flex-auto">
+                    <p class="text-sm font-semibold leading-6 text-gray-900">
+                        @vehicle.Manufacturer @vehicle.ModelName (@vehicle.Year)
+                    </p>
+                    <p class="mt-1 flex text-xs leading-5 text-gray-500 relative truncate hover:underline">@(vehicle.Seats > 1 ? $"{vehicle.Seats} seats" : "1 seat")</p>
+                </div>
+            </div>
+            <div class="flex shrink-0 items-center gap-x-4">
+                <div class="hidden sm:flex sm:flex-col sm:items-end">
+                    <p class="text-sm leading-6 text-gray-900">@vehicle.Plate</p>
+                    <div class="mt-1 flex items-center gap-x-1.5">
+                        <div class="flex-none rounded-full bg-emerald-500/20 p-1">
+                            <div class="h-1.5 w-1.5 rounded-full bg-emerald-500"></div>
+                        </div>
+                        <p class="text-xs leading-5 text-gray-500">Available</p>
+                    </div>
+                </div>
+                <svg @onclick="() => CreateBooking(vehicle)" class="h-5 w-5 flex-none text-gray-400 cursor-pointer" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+                </svg>
+            </div>
+        </li>
+    }
+</div>

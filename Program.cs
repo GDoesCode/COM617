@@ -40,6 +40,7 @@ namespace COM617
             builder.Services.AddScoped<ModalService>();
             builder.Services.AddScoped<UserService>();
             builder.Services.AddScoped<UserState>();
+            builder.Services.AddScoped<BookingService>();
 
             IdentityModelEventSource.ShowPII = true;
 

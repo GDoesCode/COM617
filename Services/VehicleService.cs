@@ -1,6 +1,7 @@
 ﻿using COM617.Data;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using MongoDB.Driver;
+using System.ComponentModel;
 
 namespace COM617.Services
 {
@@ -73,6 +74,11 @@ namespace COM617.Services
             await mongoDbService.DeleteDocument<Vehicle>(vehicle.Id);
             vehicles.Remove(vehicle);
             VehiclesChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        public List<Vehicle> GetVehicles()
+        {
+            return mongoDbService.GetQueryableCollection<Vehicle>().ToList();
         }
     }
 }
