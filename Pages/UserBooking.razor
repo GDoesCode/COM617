@@ -1,7 +1,7 @@
 ﻿@page "/ubs"
 @using COM617.Components.Inputs
 @using COM617.Data
-
+@using COM617.Components.Modals
 <div class="flex gap-x-2">
     <div>
         <label for="search" class="block text-sm font-medium leading-6 text-gray-900">Quick Search</label>
@@ -14,10 +14,11 @@
             </div>
         </div>
     </div>
-    <SelectDropdown T="VehicleType" Options="Enum.GetValues<VehicleType>().ToList()" SelectionChanged="">
+    <SelectDropdown T="VehicleType" Options="Enum.GetValues<VehicleType>().Skip(1).ToList()">
 
     </SelectDropdown>
 </div>
+
 <div>
     @foreach (Vehicle vehicle in vehicles)
     {

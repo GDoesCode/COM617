@@ -18,7 +18,8 @@ namespace COM617.Pages
 
         private void InputChanged(string input)
         {
-
+            vehicles = VehicleService!.GetVehicles().Where(vehicle => vehicle.ModelName.Contains(input)).ToList();
+            StateHasChanged();
         }
 
         private void CreateBooking(Vehicle vehicle)

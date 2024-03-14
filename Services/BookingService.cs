@@ -11,11 +11,13 @@ namespace COM617.Services
 
         public async void AddBooking(DateTime start, DateTime end, Guid vehicleId)
         {
-            var booking = new Booking();
-            booking.Start = start;
-            booking.End = end;
-            booking.UserId = userState.CurrentUser!.Id;
-            booking.VehicleId = vehicleId;
+            var booking = new Booking
+            {
+                Start = start,
+                End = end,
+                UserId = userState.CurrentUser!.Id,
+                VehicleId = vehicleId
+            };
 
             await mongoDbService.CreateDocument(booking);
         }
