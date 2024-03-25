@@ -14,13 +14,11 @@
             </div>
         </div>
     </div>
-    <SelectDropdown T="VehicleType" Options="Enum.GetValues<VehicleType>().Skip(1).ToList()">
-
-    </SelectDropdown>
+    <SelectDropdown T="VehicleType" Options="Enum.GetValues<VehicleType>().Skip(1).ToList()" Name="VehicleTypeSD"/>
 </div>
 
 <div>
-    @foreach (Vehicle vehicle in vehicles)
+    @foreach (Vehicle vehicle in Vehicles)
     {
         <li class="relative flex justify-between gap-x-6 py-5">
             <div class="flex min-w-0 gap-x-10">
