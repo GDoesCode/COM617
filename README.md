@@ -18,7 +18,7 @@ https://ssu.sharepoint.com/:f:/s/IndustrialConsultingProjectCOM6172023-24/EjmWXR
 Thank you for your interest in contributing to this project! To get started, you'll need to set up your development environment. Please follow these steps:
 
 1. **Install Visual Studio**  
-   Download and install Visual Studio (Community Edition is fine) from [Visual Studio Official Website](https://visualstudio.microsoft.com/). Ensure you include the ASP.NET and web development workload during installation.
+   Download and install Visual Studio 2022 (Community Edition is fine) from [Visual Studio Official Website](https://visualstudio.microsoft.com/). Ensure you include the ASP.NET and web development workload during installation.
 
 2. **Install Node.js**  
    Node.js is required for various build and script tasks. Download and install Node.js from [Node.js Official Website](https://nodejs.org/).
