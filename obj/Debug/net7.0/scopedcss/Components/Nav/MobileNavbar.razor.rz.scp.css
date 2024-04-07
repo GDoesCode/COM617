@@ -1,0 +1,26 @@
+#backdrop.blur[b-qg13q6fhbs] {
+  animation: applyBlur-b-qg13q6fhbs 0.5s;
+}
+
+#navbar.slideIn[b-qg13q6fhbs] {
+  animation: slideIn-b-qg13q6fhbs 0.5s;
+}
+
+@keyframes applyBlur-b-qg13q6fhbs {
+  from {
+    opacity: 0%;
+  }
+  to {
+    opacity: 100%;
+  }
+}
+@keyframes slideIn-b-qg13q6fhbs {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+
+/*# sourceMappingURL=MobileNavbar.razor.css.map */

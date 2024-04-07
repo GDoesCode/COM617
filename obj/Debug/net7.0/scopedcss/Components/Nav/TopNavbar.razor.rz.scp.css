@@ -1,0 +1,14 @@
+#profile-dropdown.drop[b-5exojjmvwn] {
+  animation: drop-b-5exojjmvwn 0.5s;
+}
+
+@keyframes drop-b-5exojjmvwn {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0%);
+  }
+}
+
+/*# sourceMappingURL=TopNavbar.razor.css.map */

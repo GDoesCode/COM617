@@ -1,0 +1,198 @@
+/* _content/COM617/Components/Inputs/ComboBox.razor.rz.scp.css */
+.combobox .options:not(.hidden)[b-8x167z4nju] {
+  animation: opening-b-8x167z4nju 100ms;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+.combobox .options.closing[b-8x167z4nju] {
+  animation: closing-b-8x167z4nju 75ms;
+  animation-fill-mode: forwards;
+}
+
+@keyframes opening-b-8x167z4nju {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes closing-b-8x167z4nju {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+/*# sourceMappingURL=ComboBox.razor.css.map */
+/* _content/COM617/Components/Inputs/SelectDropdown.razor.rz.scp.css */
+.box .dropdown:not(.hidden)[b-sre5opu2pv] {
+  animation: opening-b-sre5opu2pv 100ms;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+.box .dropdown.closing[b-sre5opu2pv] {
+  animation: closing-b-sre5opu2pv 75ms;
+  animation-fill-mode: forwards;
+}
+
+@keyframes opening-b-sre5opu2pv {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes closing-b-sre5opu2pv {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+/*# sourceMappingURL=SelectDropdown.razor.css.map */
+/* _content/COM617/Components/Modals/Modal.razor.rz.scp.css */
+#modal-container[b-i5i2bg857r] {
+  opacity: 0;
+  animation: showing-b-i5i2bg857r 0.5s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes showing-b-i5i2bg857r {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/*# sourceMappingURL=Modal.razor.css.map */
+/* _content/COM617/Components/Nav/MobileNavbar.razor.rz.scp.css */
+#backdrop.blur[b-qg13q6fhbs] {
+  animation: applyBlur-b-qg13q6fhbs 0.5s;
+}
+
+#navbar.slideIn[b-qg13q6fhbs] {
+  animation: slideIn-b-qg13q6fhbs 0.5s;
+}
+
+@keyframes applyBlur-b-qg13q6fhbs {
+  from {
+    opacity: 0%;
+  }
+  to {
+    opacity: 100%;
+  }
+}
+@keyframes slideIn-b-qg13q6fhbs {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+
+/*# sourceMappingURL=MobileNavbar.razor.css.map */
+/* _content/COM617/Components/Nav/TopNavbar.razor.rz.scp.css */
+#profile-dropdown.drop[b-5exojjmvwn] {
+  animation: drop-b-5exojjmvwn 0.5s;
+}
+
+@keyframes drop-b-5exojjmvwn {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0%);
+  }
+}
+
+/*# sourceMappingURL=TopNavbar.razor.css.map */
+/* _content/COM617/Shared/MainLayout.razor.rz.scp.css */
+.page[b-fbly9gjq51] {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+main[b-fbly9gjq51] {
+    flex: 1;
+}
+
+.sidebar[b-fbly9gjq51] {
+    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+}
+
+.top-row[b-fbly9gjq51] {
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #d6d5d5;
+    justify-content: flex-end;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+}
+
+    .top-row[b-fbly9gjq51]  a, .top-row .btn-link[b-fbly9gjq51] {
+        white-space: nowrap;
+        margin-left: 1.5rem;
+    }
+
+    .top-row a:first-child[b-fbly9gjq51] {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+@media (max-width: 640.98px) {
+    .top-row:not(.auth)[b-fbly9gjq51] {
+        display: none;
+    }
+
+    .top-row.auth[b-fbly9gjq51] {
+        justify-content: space-between;
+    }
+
+    .top-row a[b-fbly9gjq51], .top-row .btn-link[b-fbly9gjq51] {
+        margin-left: 0;
+    }
+}
+
+@media (min-width: 641px) {
+    .page[b-fbly9gjq51] {
+        flex-direction: row;
+    }
+
+    .sidebar[b-fbly9gjq51] {
+        width: 250px;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+    }
+
+    .top-row[b-fbly9gjq51] {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+    .top-row[b-fbly9gjq51], article[b-fbly9gjq51] {
+        padding-left: 2rem !important;
+        padding-right: 1.5rem !important;
+    }
+}

@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\COM617.props" />
+</Project>

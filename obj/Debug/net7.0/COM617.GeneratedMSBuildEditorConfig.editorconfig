@@ -1,0 +1,115 @@
+is_global = true
+build_property.TargetFramework = net7.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = COM617
+build_property.RootNamespace = COM617
+build_property.ProjectDir = C:\Users\Gaetano Archer\Documents\University\COM617\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 7.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\Gaetano Archer\Documents\University\COM617
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/Gaetano Archer/Documents/University/COM617/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Gaetano Archer/Documents/University/COM617/Components/Inputs/IconDropdown.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xJbnB1dHNcSWNvbkRyb3Bkb3duLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Gaetano Archer/Documents/University/COM617/Components/LoginRedirect.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMb2dpblJlZGlyZWN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Gaetano Archer/Documents/University/COM617/Components/Modals/ErrorMessageModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xNb2RhbHNcRXJyb3JNZXNzYWdlTW9kYWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Gaetano Archer/Documents/University/COM617/Components/Modals/VehicleModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xNb2RhbHNcVmVoaWNsZU1vZGFsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Gaetano Archer/Documents/University/COM617/Components/Nav/DesktopNavbar.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xOYXZcRGVza3RvcE5hdmJhci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Gaetano Archer/Documents/University/COM617/Components/Nav/NavItem.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xOYXZcTmF2SXRlbS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Gaetano Archer/Documents/University/COM617/Pages/Dashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGFzaGJvYXJkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Gaetano Archer/Documents/University/COM617/Pages/EditProfile.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWRpdFByb2ZpbGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Gaetano Archer/Documents/University/COM617/Pages/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Gaetano Archer/Documents/University/COM617/Pages/Register.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXN0ZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Gaetano Archer/Documents/University/COM617/Pages/SignIn.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2lnbkluLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Gaetano Archer/Documents/University/COM617/Pages/VehicleManagement.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmVoaWNsZU1hbmFnZW1lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Gaetano Archer/Documents/University/COM617/Shared/EmptyLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXEVtcHR5TGF5b3V0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Gaetano Archer/Documents/University/COM617/Shared/LoginDisplay.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXExvZ2luRGlzcGxheS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Gaetano Archer/Documents/University/COM617/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Gaetano Archer/Documents/University/COM617/Components/Inputs/ComboBox.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xJbnB1dHNcQ29tYm9Cb3gucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-8x167z4nju
+
+[C:/Users/Gaetano Archer/Documents/University/COM617/Components/Inputs/SelectDropdown.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xJbnB1dHNcU2VsZWN0RHJvcGRvd24ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-sre5opu2pv
+
+[C:/Users/Gaetano Archer/Documents/University/COM617/Components/Modals/Modal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xNb2RhbHNcTW9kYWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-i5i2bg857r
+
+[C:/Users/Gaetano Archer/Documents/University/COM617/Components/Nav/MobileNavbar.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xOYXZcTW9iaWxlTmF2YmFyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-qg13q6fhbs
+
+[C:/Users/Gaetano Archer/Documents/University/COM617/Components/Nav/TopNavbar.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xOYXZcVG9wTmF2YmFyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-5exojjmvwn
+
+[C:/Users/Gaetano Archer/Documents/University/COM617/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-fbly9gjq51
+
+[C:/Users/Gaetano Archer/Documents/University/COM617/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Gaetano Archer/Documents/University/COM617/Pages/_Host.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0hvc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
