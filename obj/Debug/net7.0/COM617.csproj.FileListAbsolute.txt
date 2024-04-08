@@ -104,4 +104,3 @@ C:\Users\Gaetano Archer\Documents\University\COM617\obj\Debug\net7.0\refint\COM6
 C:\Users\Gaetano Archer\Documents\University\COM617\obj\Debug\net7.0\COM617.pdb
 C:\Users\Gaetano Archer\Documents\University\COM617\obj\Debug\net7.0\COM617.genruntimeconfig.cache
 C:\Users\Gaetano Archer\Documents\University\COM617\obj\Debug\net7.0\ref\COM617.dll
-C:\Users\Gaetano Archer\Documents\University\COM617\bin\Debug\net7.0\tailwind.extension.json
