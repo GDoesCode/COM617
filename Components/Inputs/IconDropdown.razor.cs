@@ -10,7 +10,7 @@ namespace COM617.Components.Inputs
         public Dictionary<T, string> Options { get; set; } = null!;
 
         [Parameter]
-        public T? Selected {  get; set; }
+        public T? Selected { get; set; }
 
         protected override void OnInitialized()
         {
@@ -20,7 +20,5 @@ namespace COM617.Components.Inputs
                 StateHasChanged();
             }
         }
-
-
     }
 }
