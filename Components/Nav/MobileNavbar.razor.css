@@ -1,1 +1,26 @@
-#backdrop.blur{animation:applyBlur .5s}#navbar.slideIn{animation:slideIn .5s}@keyframes applyBlur{from{opacity:0%}to{opacity:100%}}@keyframes slideIn{from{transform:translateX(-100%)}to{transform:translateX(0%)}}/*# sourceMappingURL=MobileNavbar.razor.css.map */
+#backdrop.blur {
+  animation: applyBlur 0.5s;
+}
+
+#navbar.slideIn {
+  animation: slideIn 0.5s;
+}
+
+@keyframes applyBlur {
+  from {
+    opacity: 0%;
+  }
+  to {
+    opacity: 100%;
+  }
+}
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+
+/*# sourceMappingURL=MobileNavbar.razor.css.map */

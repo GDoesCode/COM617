@@ -9,12 +9,14 @@ namespace COM617.Services
     {
         private List<Vehicle> vehicles;
         private MongoDbService mongoDbService;
+        private BookingService bookingService;
 
         public event EventHandler? VehiclesChanged;
 
-        public VehicleService(MongoDbService mongoDbService)
+        public VehicleService(MongoDbService mongoDbService, BookingService bookingService)
         {
             this.mongoDbService = mongoDbService;
+            this.bookingService = bookingService;
             vehicles = mongoDbService.GetQueryableCollection<Vehicle>().ToList();
         }
 
@@ -79,6 +81,28 @@ namespace COM617.Services
         public List<Vehicle> GetVehicles()
         {
             return mongoDbService.GetQueryableCollection<Vehicle>().ToList();
+        }
+
+        public List<Vehicle> GetVehicles(Func<Vehicle, bool> condition)
+        {
+            return mongoDbService.GetDocumentsByFilter(condition).ToList();
+        }
+
+        public List<Vehicle> GetAvailableVehicles(DateTime start, DateTime end)
+        {
+            var bookings = bookingService.GetBookings(start, end);
+            var availableVehicles = new List<Vehicle>();
+            foreach (Vehicle vehicle in GetVehicles())
+            {
+                if (!bookings.Any(x => x.VehicleId == vehicle.Id))
+                    availableVehicles.Add(vehicle);
+            }
+            return availableVehicles;
+        }
+
+        public Vehicle GetVehicle(Guid id)
+        {
+            return mongoDbService.GetDocumentsByFilter<Vehicle>(x => x.Id == id).First();
         }
     }
 }

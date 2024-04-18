@@ -25,14 +25,17 @@ namespace COM617.Shared
         private void SetIdentity(IIdentity newIdentity) => identity = newIdentity;
         private void CheckUser()
         {
-            var user = userService!.GetUser(identity!.Name!);
-            if (userState!.CurrentUser == user)
-                return;
-
-            if (user is null)
-                navigationManager!.NavigateTo("/register");
-            else
-                userState.SetCurrentUser(user);
+            if (userState!.CurrentUser is null)
+            {
+                var user = userService!.GetUser(identity!.Name!);
+                if (user is null)
+                    navigationManager!.NavigateTo("/register");
+                else
+                {
+                    if (user.Id != userState!.CurrentUser?.Id)
+                        userState.SetCurrentUser(user);
+                }
+            }
         }
 
         protected override void OnInitialized()

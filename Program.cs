@@ -35,12 +35,14 @@ namespace COM617
                 .AddMicrosoftIdentityConsentHandler();
 
             builder.Services.AddSingleton<MongoDbService>();
-            builder.Services.AddSingleton<VehicleService>();
+            
 
             builder.Services.AddScoped<ModalService>();
             builder.Services.AddScoped<UserService>();
             builder.Services.AddScoped<UserState>();
+            builder.Services.AddScoped<VehicleService>();
             builder.Services.AddScoped<BookingService>();
+
 
             IdentityModelEventSource.ShowPII = true;
 

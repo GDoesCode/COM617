@@ -17,7 +17,7 @@ namespace COM617.Services.Identity
 
         public List<User> GetUsers() => mongoDbService.GetQueryableCollection<User>().ToList();
 
-        public User? GetUser(string email) => mongoDbService.GetDocumentsByFilter<User>(user => user.Email == email).FirstOrDefault();
+        public User? GetUser(string email) => mongoDbService.GetDocumentsByFilter<User>(user => user.Email.ToLower().Equals(email.ToLower())).FirstOrDefault();
 
         public event EventHandler<User>? OnUserCreated;
         public event EventHandler<User>? OnUserUpdated;
