@@ -18,7 +18,7 @@ namespace COM617.Pages
         {
             if (UserState!.CurrentUser is null)
             {
-                NavigationManager!.NavigateTo("/");
+                NavigationManager!.NavigateTo("/EditProfile");
             }
         }
 
