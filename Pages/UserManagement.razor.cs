@@ -40,7 +40,5 @@ namespace COM617.Pages
             UserService.OnUserUpdated += UpdateUser;
             UserService.OnUserDeleted += RemoveUser;
         }
-
-
     }
 }

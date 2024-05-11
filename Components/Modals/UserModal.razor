@@ -43,8 +43,8 @@
                         <div class="col-span-full">
                             <label for="photo" class="block text-sm font-medium leading-6 text-gray-900">Photo</label>
                             <div class="mt-2 flex items-center gap-x-3">
-                                <img class="h-12 w-12 rounded-full" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
-                                <button type="button" class="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">Change</button>
+                                <img class="h-12 w-12 rounded-full" src="@user.ProfilePicUrl" alt="" />
+                                <InputFile OnChange="HandleSelectedFile" accept="image/*" />
                             </div>
                         </div>
                     </div>
@@ -53,12 +53,11 @@
 
 
             <div class="mt-6 flex items-center justify-end gap-x-6">
-                <button type="button" class="text-sm font-semibold leading-6 text-gray-900">Cancel</button>
+                <button type="button" @onclick="ModalService!.Close" class="text-sm font-semibold leading-6 text-gray-900">Cancel</button>
                 <button type="submit" @onclick="Save" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                     @(Mode ? "Save" : "Create")
                 </button>
             </div>
         </form>
-
     </div>
 </Modal>
