@@ -22,7 +22,7 @@ namespace COM617.Shared
         [Inject]
         private AuthenticationStateProvider? authenticationStateProvider { get; set; } = null;
 
-        private async void CheckUser()
+        private async Task CheckUser()
         {
             var state = await authenticationStateProvider!.GetAuthenticationStateAsync();
             var user = state.User;
@@ -39,9 +39,9 @@ namespace COM617.Shared
             }
         }
 
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
-            CheckUser();
+            await CheckUser();
             ModalService.ModalUpdated += (_, _) => InvokeAsync(StateHasChanged);
         }
     }
