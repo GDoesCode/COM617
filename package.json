@@ -9,6 +9,7 @@
     "build-sass-release": "sass Pages:Pages Components:Components --style compressed",
     "build-tailwind": "npx tailwindcss -i ./wwroot/css/tailwind.css -o ./wwwroot/css/output.css",
     "build-tailwind-release": "npx tailwindcss -i ./wwroot/css/tailwind.css -o ./wwwroot/css/output.css --minify",
+    "build:azure": "npm run build-sass && npm run build-sass-release && npm run build-tailwind && npm run build-tailwind-release",
     "watch:tailwind": "gulp watch:tailwind"
   },
   "keywords": [],
