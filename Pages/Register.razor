@@ -33,7 +33,7 @@
 
                     @if (accountCreated is null)
                     {
-                        <button @onclick="() => CreateAccount(context.User.Identity!)" type="button" class="rounded-md bg-indigo-50 px-3.5 py-2.5 text-sm font-semibold text-indigo-600 shadow-sm hover:bg-indigo-100">Create Account (dev)</button>
+                        <button @onclick="() => CreateAccount(context.User.Identity!)" type="button" class="rounded-md bg-indigo-50 px-3.5 py-2.5 text-sm font-semibold text-indigo-600 shadow-sm hover:bg-indigo-100">Create Admin Account (dev)</button>
                     } 
                     else if (accountCreated == true)
                     {

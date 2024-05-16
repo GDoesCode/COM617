@@ -19,6 +19,8 @@ namespace COM617.Services.Identity
 
         public User? GetUser(string email) => mongoDbService.GetDocumentsByFilter<User>(user => user.Email.ToLower().Equals(email.ToLower())).FirstOrDefault();
 
+        public User? GetUser(Guid id) => mongoDbService.GetDocumentsByFilter<User>(user => user.Id.Equals(id)).FirstOrDefault();
+
         public event EventHandler<User>? OnUserCreated;
         public event EventHandler<User>? OnUserUpdated;
         public event EventHandler<User>? OnUserDeleted;

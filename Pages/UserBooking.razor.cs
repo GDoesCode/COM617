@@ -16,16 +16,12 @@ namespace COM617.Pages
         [Inject]
         private BookingService BookingService { get; set; } = null!;
 
-        private List<Booking> bookings = null!;
-
-        protected override void OnInitialized()
-        {
-            bookings = BookingService!.GetBookings().ToList();
-            StateHasChanged();
-        }
+        private List<Booking> bookings = new();
 
         protected override void OnAfterRender(bool firstRender)
         {
+            bookings = BookingService!.GetCurrentUserBookings().ToList();
+            StateHasChanged();
             if (firstRender)
             {
                 BookingService.BookingChanged += BookingChanged;
@@ -35,19 +31,19 @@ namespace COM617.Pages
                 
         }
 
-        private void BookingAdded(object? _, Booking booking)
+        private async void BookingAdded(object? _, Booking booking)
         {
             bookings.Add(booking);
-            StateHasChanged();
+            await InvokeAsync(StateHasChanged);
         }
 
-        private void BookingRemoved(object? _, Guid bookingId)
+        private async void BookingRemoved(object? _, Guid bookingId)
         {
             bookings.RemoveAll(x => x.Id == bookingId);
-            StateHasChanged();
+            await InvokeAsync(StateHasChanged);
         }
 
-        private void BookingChanged(object? _, Booking booking)
+        private async void BookingChanged(object? _, Booking booking)
         {
             foreach (var b in bookings)
             {
@@ -58,7 +54,7 @@ namespace COM617.Pages
                     break;
                 }
             }
-            StateHasChanged();
+            await InvokeAsync(StateHasChanged);
         }
 
         public void Dispose()

@@ -2,7 +2,6 @@
 using COM617.Services;
 using COM617.Services.Identity;
 using Microsoft.AspNetCore.Components;
-using System.Drawing.Text;
 
 namespace COM617.Pages
 {
@@ -15,6 +14,9 @@ namespace COM617.Pages
 
         [Inject]
         private ModalService? ModalService { get; set; }
+
+        [Inject]
+        private BookingService? BookingService { get; set; }
 
         protected override void OnInitialized()
         {

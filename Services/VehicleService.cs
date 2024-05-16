@@ -94,7 +94,7 @@ namespace COM617.Services
             var availableVehicles = new List<Vehicle>();
             foreach (Vehicle vehicle in GetVehicles())
             {
-                if (!bookings.Any(x => x.VehicleId == vehicle.Id))
+                if (!bookings.Any(x => x.VehicleId == vehicle.Id) && !vehicle.Disabled)
                     availableVehicles.Add(vehicle);
             }
             return availableVehicles;

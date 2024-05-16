@@ -1,8 +1,6 @@
 ﻿using COM617.Data;
-using COM617.Pages;
 using COM617.Services.Identity;
 using MongoDB.Driver;
-using System.ComponentModel;
 
 namespace COM617.Services
 {
@@ -15,12 +13,14 @@ namespace COM617.Services
         public event EventHandler<Booking>? BookingAdded;
         public event EventHandler<Guid>? BookingDeleted;
 
-        public IEnumerable<Booking> GetBookings() => 
+        public IEnumerable<Booking> GetCurrentUserBookings() => 
             mongoDbService.GetDocumentsByFilter<Booking>(x => x.UserId == userState.CurrentUser!.Id);
+
+        public IEnumerable<Booking> GetBookings() => mongoDbService.GetQueryableCollection<Booking>();
 
         public IEnumerable<Booking> GetBookings(DateTime start, DateTime end)
         {
-            var allBookings = GetBookings(); // Get all bookings for the current user
+            var allBookings = GetCurrentUserBookings(); // Get all bookings for the current user
 
             // Filter the bookings where either the start or end time falls within the specified range
             var intersectingBookings = allBookings.Where(b =>
@@ -32,6 +32,11 @@ namespace COM617.Services
         public Booking GetBooking(Guid id)
         {
             return mongoDbService.GetDocumentsByFilter<Booking>(x => x.Id == id).First();
+        }
+
+        public double GetTotalMiles(Guid userId)
+        {
+            return mongoDbService.GetDocumentsByFilter<Booking>(x => x.UserId.Equals(userId)).Sum(x => x.Distance);
         }
 
         public async Task<Booking> CreateBooking(DateTime start, DateTime end, Guid vehicleId, bool saveToDb = true)
@@ -64,7 +69,11 @@ namespace COM617.Services
             }
         }
 
-        public async void CreateBooking(Booking booking) => await mongoDbService.CreateDocument(booking);
+        public async void CreateBooking(Booking booking)
+        {
+            await mongoDbService.CreateDocument(booking);
+            BookingAdded?.Invoke(this, booking);
+        }
 
         public async void RemoveBooking(Guid bookingId)
         {

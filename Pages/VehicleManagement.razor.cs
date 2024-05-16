@@ -15,7 +15,7 @@ namespace COM617.Pages
 
         protected override void OnInitialized()
         {
-            VehicleService.VehiclesChanged += (_, _) => InvokeAsync(StateHasChanged);
+            VehicleService.VehiclesChanged += async (_, _) => await InvokeAsync(StateHasChanged);
         }
 
         private List<Vehicle> GetVehicles()

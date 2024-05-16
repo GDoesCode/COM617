@@ -44,14 +44,14 @@
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
                                     <div class="text-gray-900">@user.Title</div>
-                                    <div class="mt-1 text-gray-500">Miles Driven: <span class="font-semibold">1,231</span></div>
+                                    <div class="mt-1 text-gray-500">Miles Driven: <span class="font-semibold">@BookingService!.GetTotalMiles(user.Id)</span></div>
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
                                     <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Active</span>
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">@user.Role</td>
                                 <td class="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                                    <a @onclick="() => ModalService!.Request(typeof(UserModal), user)" class="text-indigo-600 hover:text-indigo-900">Edit<span class="sr-only">, @user.Firstname @user.Lastname</span></a>
+                                    <a @onclick="() => ModalService!.Request(typeof(UserModal), user)" class="text-indigo-600 hover:text-indigo-900 cursor-pointer">Edit<span class="sr-only">, @user.Firstname @user.Lastname</span></a>
                                 </td>
                             </tr>
                         }
