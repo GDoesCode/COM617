@@ -1,17 +1,14 @@
 ﻿using COM617.Components.Nav;
-using COM617.Data;
 using COM617.Services;
 using COM617.Services.Identity;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using System.Security.Principal;
 
 namespace COM617.Shared
 {
     public partial class MainLayout
     {
         private MobileNavbar? mobileNavbarRef;
-        private IIdentity? identity;
 
         [Inject]
         private NavigationManager? navigationManager { get; set; }
@@ -22,28 +19,30 @@ namespace COM617.Shared
         [Inject]
         private UserState? userState { get; set; }
 
-        private void SetIdentity(IIdentity newIdentity) => identity = newIdentity;
-        private void CheckUser()
-        {
-            var user = userService!.GetUser(identity!.Name!);
-            if (userState!.CurrentUser == user)
-                return;
+        [Inject]
+        private AuthenticationStateProvider? authenticationStateProvider { get; set; } = null;
 
-            if (user is null)
-                navigationManager!.NavigateTo("/register");
-            else
-                userState.SetCurrentUser(user);
+        private async Task CheckUser()
+        {
+            var state = await authenticationStateProvider!.GetAuthenticationStateAsync();
+            var user = state.User;
+            if (userState!.CurrentUser is null)
+            {
+                var mongoUser = userService!.GetUser(user.FindFirst("preferred_username")!.Value);
+                if (mongoUser is null)
+                    navigationManager!.NavigateTo("/register");
+                else
+                {
+                    if (mongoUser.Id != userState!.CurrentUser?.Id)
+                        userState.SetCurrentUser(mongoUser);
+                }
+            }
         }
 
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
+            await CheckUser();
             ModalService.ModalUpdated += (_, _) => InvokeAsync(StateHasChanged);
-        }
-
-        protected override void OnAfterRender(bool firstRender)
-        {
-            if (firstRender)
-                CheckUser();
         }
     }
 }

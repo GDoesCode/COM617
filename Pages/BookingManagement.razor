@@ -1,4 +1,4 @@
-﻿@page "/vm"
+﻿@page "/bm"
 @using COM617.Components.Modals
 @using COM617.Services
 @using Data
@@ -7,54 +7,66 @@
 @inject ModalService modalService
 @namespace COM617.Pages
 
-<PageTitle>Vehicle Management</PageTitle>
+<PageTitle>Booking Management</PageTitle>
 
 <header class="justify-between flex">
     <div class="max-w-7xl">
-        <h1 class="text-3xl font-bold text-gray-900">Vehicle Management</h1>
-    </div>
-    <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-        <button type="button" @onclick="() => modalService.Request(typeof(VehicleModal), null)" class="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add vehicle</button>
+        <h1 class="text-3xl font-bold text-gray-900">Booking Management</h1>
     </div>
 </header>
 
+
+@if (!bookings.Any())
+{
+    <p class="font-semibold text-md text-gray-600 mt-10">There are no bookings to manage.</p>
+}
 <ul role="list" class="divide-y divide-gray-100">
-    @foreach (Vehicle vehicle in vehicles)
+    @foreach (Booking booking in bookings)
     {
-        <li  class="relative flex justify-between gap-x-6 py-5">
+        Vehicle vehicle = VehicleService.GetVehicle(booking.VehicleId);
+        User? user = UserService.GetUser(booking.UserId);
+        <li class="relative flex justify-between gap-x-6 py-5">
             <div class="flex min-w-0 gap-x-10">
                 <div class="w-[5rem]">
-                    <img class="" src="@vehicle.ImageSrc" alt="">
+                    <img class="" src="@user?.ProfilePicUrl" alt="">
                 </div>
-                
+
                 <div class="min-w-0 flex-auto">
                     <p class="text-sm font-semibold leading-6 text-gray-900">
-                        @vehicle.Manufacturer @vehicle.ModelName (@vehicle.Year)
+                        @user?.Firstname @user?.Lastname (@vehicle.Manufacturer @vehicle.ModelName (@vehicle.Year))
                     </p>
-                    <p class="mt-1 flex text-xs leading-5 text-gray-500 relative truncate hover:underline">@(vehicle.Seats > 1 ? $"{vehicle.Seats} seats" : "1 seat")</p>
+                    <p class="mt-1 flex text-xs leading-5 text-gray-500 relative truncate hover:underline">@booking.Start - @booking.End</p>
                 </div>
             </div>
             <div class="flex shrink-0 items-center gap-x-4">
                 <div class="hidden sm:flex sm:flex-col sm:items-end">
                     <p class="text-sm leading-6 text-gray-900">@vehicle.Plate</p>
                     <div class="mt-1 flex items-center gap-x-1.5">
-                        @if (vehicle.Disabled)
+                        @if (booking.Start > DateTime.Now)
                         {
                             <div class="flex-none rounded-full bg-red-500/20 p-1">
                                 <div class="h-1.5 w-1.5 rounded-full bg-red-500"></div>
                             </div>
-                            <p class="text-xs leading-5 text-gray-500">Disabled</p>
-                        } 
+                            <p class="text-xs leading-5 text-gray-500">Not started</p>
+                        }
+                        else if (booking.End < DateTime.Now)
+                        {
+                            <div class="flex-none rounded-full bg-yellow-500/20 p-1">
+                                <div class="h-1.5 w-1.5 rounded-full bg-yellow-500"></div>
+                            </div>
+                            <p class="text-xs leading-5 text-gray-500">Completed</p>
+                        }
                         else
                         {
                             <div class="flex-none rounded-full bg-emerald-500/20 p-1">
                                 <div class="h-1.5 w-1.5 rounded-full bg-emerald-500"></div>
                             </div>
-                            <p class="text-xs leading-5 text-gray-500">Available</p>
+                            <p class="text-xs leading-5 text-gray-500">Active</p>
                         }
+
                     </div>
                 </div>
-                <svg @onclick="() => EditVehicle(vehicle)" class="h-5 w-5 flex-none text-gray-400 cursor-pointer" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <svg @onclick="() => ModalService.Request(typeof(BookingModal), booking)" class="h-5 w-5 flex-none text-gray-400 cursor-pointer" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                     <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
                 </svg>
             </div>

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
+using Microsoft.IdentityModel.Logging;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
@@ -25,7 +26,7 @@ namespace COM617
 
             builder.Services.AddAuthorization(options =>
             {
-                // By default, all incoming requests will be authorized according to the default policy
+                // By default, all incoming requests will be authorized according to the default policy.
                 options.FallbackPolicy = options.DefaultPolicy;
             });
 
@@ -34,11 +35,16 @@ namespace COM617
                 .AddMicrosoftIdentityConsentHandler();
 
             builder.Services.AddSingleton<MongoDbService>();
-            builder.Services.AddSingleton<VehicleService>();
+            
 
             builder.Services.AddScoped<ModalService>();
             builder.Services.AddScoped<UserService>();
             builder.Services.AddScoped<UserState>();
+            builder.Services.AddScoped<VehicleService>();
+            builder.Services.AddScoped<BookingService>();
+
+
+            IdentityModelEventSource.ShowPII = true;
 
             // Set MongoDb's guid serializer
 #pragma warning disable CS0618 // This line won't be required in future versions of the MongoDb driver.

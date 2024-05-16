@@ -24,6 +24,6 @@ namespace COM617.Components.Nav
 
         private async Task Clicked() => await OnClick.InvokeAsync(this);
 
-        public void SetActive() => Active = true;
+        public void SetActive(bool active) => Active = active;
     }
 }

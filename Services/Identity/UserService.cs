@@ -15,7 +15,15 @@ namespace COM617.Services.Identity
             this.mongoDbService = mongoDbService;
         }
 
-        public User? GetUser(string email) => mongoDbService.GetDocumentsByFilter<User>(user => user.Email == email).FirstOrDefault();
+        public List<User> GetUsers() => mongoDbService.GetQueryableCollection<User>().ToList();
+
+        public User? GetUser(string email) => mongoDbService.GetDocumentsByFilter<User>(user => user.Email.ToLower().Equals(email.ToLower())).FirstOrDefault();
+
+        public User? GetUser(Guid id) => mongoDbService.GetDocumentsByFilter<User>(user => user.Id.Equals(id)).FirstOrDefault();
+
+        public event EventHandler<User>? OnUserCreated;
+        public event EventHandler<User>? OnUserUpdated;
+        public event EventHandler<User>? OnUserDeleted;
 
         public async Task<bool> CreateUser(User user)
         {
@@ -23,6 +31,7 @@ namespace COM617.Services.Identity
             if (dbUser is null)
             {
                 await mongoDbService.CreateDocument(user);
+                OnUserCreated?.Invoke(this, user);
                 return true;
             } 
             else
@@ -37,6 +46,20 @@ namespace COM617.Services.Identity
             else
             {
                 await mongoDbService.ReplaceDocument(user.Id, user);
+                OnUserUpdated?.Invoke(this, user);
+                return true;
+            }
+        }
+
+        public async Task<bool> DeleteUser(User user)
+        {
+            var dbUser = GetUser(user.Email!);
+            if (dbUser is null)
+                return false;
+            else
+            {
+                await mongoDbService.DeleteDocument<User>(user.Id);
+                OnUserDeleted?.Invoke(this, user);
                 return true;
             }
         }

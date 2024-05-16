@@ -1,0 +1,146 @@
+﻿<Modal>
+    @if (mode is Mode.DataEntry)
+    {
+        <div class="space-y-12">
+            <div class="border-b border-gray-800/10 pb-12">
+                <h2 class="text-base font-semibold leading-7 text-gray-800">Booking Tool</h2>
+                <p class="mt-1 text-sm leading-6 text-gray-600">Create a new vehicle booking.</p>
+                <div class="flex space-x-2 mt-4">
+                    <COM617.Components.Inputs.DatePicker Label="Start date" OnChange="(newDate) => startDate = newDate" Placeholder="@DateTime.Now.Date.ToString()"/>
+                    <COM617.Components.Inputs.DatePicker Label="End date" OnChange="(newDate) => endDate = newDate" Placeholder="@DateTime.Now.Date.ToString()" />
+                </div>
+                <div class="flex space-x-2 mt-4">
+                    <COM617.Components.Inputs.TimePicker Label="Start time" OnChange="(newTime) => startTime = newTime" Placeholder="@DateTime.Now.TimeOfDay.ToString()" />
+                    <COM617.Components.Inputs.TimePicker Label="End time" OnChange="(newTime) => endTime = newTime" Placeholder="@DateTime.Now.TimeOfDay.ToString()" />
+                </div>
+            </div>
+        </div>
+        <div class="mt-6 flex items-center justify-end gap-x-6">
+            <button @onclick="ModalService.Close" type="button" class="text-sm font-semibold leading-6 text-gray-900">Cancel</button>
+            <button @onclick="ConfirmDateTime" type="button" class="text-sm py-1 px-2 rounded-md font-semibold leading-6 text-white bg-indigo-600">Search</button>
+        </div>
+    }
+    else if (mode is Mode.StartLocation)
+    {
+        <div class="space-y-12">
+            <div class="border-b border-gray-800/10 pb-12">
+                <h2 class="text-base font-semibold leading-7 text-gray-800">Booking Tool</h2>
+                <p class="mt-1 text-sm leading-6 text-gray-600">Click to select starting location (@startAddress)</p>
+                <p class="mt-1 text-sm leading-6 text-gray-600 font-semibold">Current Distance: @distance miles.</p>
+                <div id="map" style="width: 100%; height: 400px;" />
+                <div class="mt-6 flex items-center justify-end gap-x-6">
+                    <button @onclick="() => mode = Mode.DataEntry" type="button" class="text-sm font-semibold leading-6 text-gray-900">Go Back</button>
+                    <button @onclick="() => mode = Mode.EndLocation" type="button" class="text-sm py-1 px-2 rounded-md font-semibold leading-6 text-white bg-indigo-600">Confirm</button>
+                </div>
+            </div>
+        </div>
+    }
+    else if (mode is Mode.EndLocation)
+    {
+        <div class="space-y-12">
+            <div class="border-b border-gray-800/10 pb-12">
+                <h2 class="text-base font-semibold leading-7 text-gray-800">Booking Tool</h2>
+                <p class="mt-1 text-sm leading-6 text-gray-600">Click to select finishing location (@endAddress)</p>
+                <p class="mt-1 text-sm leading-6 text-gray-600 font-semibold">Current Distance: @distance miles.</p>
+                <div id="map" style="width: 100%; height: 400px;" />
+                <div class="mt-6 flex items-center justify-end gap-x-6">
+                    <button @onclick="() => mode = Mode.StartLocation" type="button" class="text-sm font-semibold leading-6 text-gray-900">Go Back</button>
+                    <button @onclick="ConfirmLocation" type="button" class="text-sm font-semibold leading-6 text-gray-900">Confirm</button>
+                </div>
+            </div>
+        </div>
+    }
+    else if (mode is Mode.VehicleSelection)
+    {
+        <div class="space-y-12">
+            <div class="border-b border-gray-800/10 pb-12">
+                <h2 class="text-base font-semibold leading-7 text-gray-800">Booking Tool</h2>
+                @if (availableVehicles.Any())
+                {
+                    <p class="mt-1 text-sm leading-6 text-gray-600">There are <span class="font-bold text-black">@availableVehicles.Count</span> vehicles available.</p>
+                    <ul role="list" class="divide-y divide-gray-100 mt-5">
+                        @foreach (var vehicle in availableVehicles)
+                        {
+                            <li class="relative flex justify-between gap-x-6 py-5">
+                                <div class="flex min-w-0 gap-x-10">
+                                    <div class="w-[5rem]">
+                                        <img class="" src="@vehicle.ImageSrc" alt="">
+                                    </div>
+
+                                    <div class="min-w-0 flex-auto">
+                                        <p class="text-sm font-semibold leading-6 text-gray-900">
+                                            @vehicle.Manufacturer @vehicle.ModelName (@vehicle.Year)
+                                        </p>
+                                        <p class="mt-1 flex text-xs leading-5 text-gray-500 relative truncate hover:underline">@(vehicle.Seats > 1 ? $"{vehicle.Seats} seats" : "1 seat")</p>
+                                    </div>
+                                </div>
+                                <div class="flex shrink-0 items-center gap-x-4">
+                                    <div class="hidden sm:flex sm:flex-col sm:items-end">
+                                        <p class="text-sm leading-6 text-gray-900">@vehicle.Plate</p>
+                                        <div class="mt-1 flex items-center gap-x-1.5">
+                                            <div class="flex-none rounded-full bg-emerald-500/20 p-1">
+                                                <div class="h-1.5 w-1.5 rounded-full bg-emerald-500"></div>
+                                            </div>
+                                            <p class="text-xs leading-5 text-gray-500">Available</p>
+                                        </div>
+                                    </div>
+                                    <svg @onclick="() => SelectVehicle(vehicle)" class="h-5 w-5 flex-none text-gray-400 cursor-pointer" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p>There are no vehicles available during the selected period.</p>
+                }
+            </div>
+        </div>
+        <div class="mt-6 flex items-center justify-end gap-x-6">
+            <button @onclick="ModalService.Close" type="button" class="text-sm font-semibold leading-6 text-gray-900">Cancel</button>
+        </div>
+    }
+    else if (mode is Mode.Confirmation)
+    {
+        <div class="space-y-12">
+            <div class="border-b border-gray-800/10 pb-12">
+                <h2 class="text-base font-semibold leading-7 text-gray-800">Booking Tool</h2>
+                <p class="mt-1 text-sm leading-6 text-gray-600">Please confirm your booking details.</p>
+
+                <p class="mt-4 text-gray-600 text-md">Start Date/Time: <span class="font-semibold">@booking.Start.ToShortDateString()</span> (<span class="font-semibold">@booking.Start.TimeOfDay</span>)</p>
+                <p class="text-gray-600 text-md">End Date/Time: <span class="font-semibold">@booking.End.ToShortDateString()</span> (<span class="font-semibold">@booking.End.TimeOfDay</span>)</p>
+
+                <p class="mt-4 text-gray-600 text-md">Start Address: <span class="font-semibold">@startAddress</span></p>
+                <p class="text-gray-600 text-md">End Address: <span class="font-semibold">@endAddress</span></p>
+            </div>
+        </div>
+        <div class="mt-6 flex items-center justify-end gap-x-6">
+            <button @onclick="() => mode = Mode.VehicleSelection" type="button" class="text-sm font-semibold leading-6 text-gray-900">Go back</button>
+            <button @onclick="ConfirmBooking" type="button" class="text-sm py-1 px-2 rounded-md font-semibold leading-6 text-white bg-indigo-600">Confirm</button>
+        </div>
+    }
+    else if (mode is Mode.ModifyExisting)
+    {
+        <div class="space-y-12">
+            <div class="border-b border-gray-800/10 pb-12">
+                <h2 class="text-base font-semibold leading-7 text-gray-800">Booking Tool</h2>
+                <p class="mt-1 text-sm leading-6 text-gray-600">Please confirm your booking details.</p>
+
+                <p class="mt-4 text-gray-600 text-md">Start Date/Time: <span class="font-semibold">@booking.Start.ToShortDateString()</span> (<span class="font-semibold">@booking.Start.TimeOfDay</span>)</p>
+                <p class="text-gray-600 text-md">End Date/Time: <span class="font-semibold">@booking.End.ToShortDateString()</span> (<span class="font-semibold">@booking.End.TimeOfDay</span>)</p>
+
+                <p class="mt-4 text-gray-600 text-md">Start Address: <span class="font-semibold">@startAddress</span></p>
+                <p class="text-gray-600 text-md">End Address: <span class="font-semibold">@endAddress</span></p>
+            </div>
+        </div>
+        <div class="mt-6 flex items-center justify-between">
+            <button @onclick="DeleteBooking" type="button" class="text-sm py-1 px-2 rounded-md font-semibold leading-6 text-gray-100 bg-red-500">Delete</button>
+            <div class="flex gap-x-6">
+                <button @onclick="ModalService.Close" type="button" class="text-sm font-semibold leading-6 text-gray-900">Cancel</button>
+                <button @onclick="ModifyBooking" type="button" class="text-sm py-1 px-2 rounded-md font-semibold leading-6 text-white bg-indigo-600">Modify</button>
+            </div>
+        </div>
+    }
+</Modal>

@@ -9,7 +9,11 @@
                 <h2 class="text-base font-semibold leading-7 text-gray-900">Vehicle Information</h2>
                 <p class="mt-1 text-sm leading-6 text-gray-600">Ensure all information is correct before submitting.</p>
             </div>
-            <img src="img/vehicles/@vehicle.ImageSrc" class="pb-[13rem]" />
+            <div class="pb-[13rem]">
+                <img src="@vehicle.ImageSrc" />
+                <InputFile OnChange="HandleSelectedFile" accept="image/*" />
+            </div>
+            
         </div>
 
         <form class="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
@@ -40,6 +44,13 @@
                         <label for="vehicle-type" class="block text-sm font-medium leading-6 text-gray-900">Vehicle type</label>
                         <div class="mt-2">
                             <SelectDropdown T="VehicleType" Options="Enum.GetValues<VehicleType>().Skip(1).ToList()" SelectionChanged="(type) => ChangeValue(nameof(Vehicle.Type), type)" Selection="vehicle.Type" />
+                        </div>
+                    </div>
+
+                    <div class="sm:col-span-4">
+                        <label for="vehicle-type" class="block text-sm font-medium leading-6 text-gray-900">Disabled</label>
+                        <div class="mt-2">
+                            <input @onchange="() => vehicle.Disabled = !vehicle.Disabled" checked="@vehicle.Disabled" type="checkbox" />
                         </div>
                     </div>
 

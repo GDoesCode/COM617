@@ -21,15 +21,23 @@
             }
         }
 
-        private void SetActive(NavItem navItem)
+        private void SetActive(NavItem newActiveNavItem)
         {
-            navItems.First(x => x == navItem).SetActive();
+            foreach (var navItem in navItems.Where(x => x != newActiveNavItem))
+            {
+                navItem.SetActive(false);
+            }
+            newActiveNavItem.SetActive(true);
             StateHasChanged();
         }
 
-        private void SetActiveAdmin(NavItem navItem)
+        private void SetActiveAdmin(NavItem newActiveNavItem)
         {
-            adminNavItems.First(x => x == navItem).SetActive();
+            foreach (var navItem in adminNavItems.Where(x => x != newActiveNavItem))
+            {
+                navItem.SetActive(false);
+            }
+            newActiveNavItem.SetActive(true);
             StateHasChanged();
         }
     }

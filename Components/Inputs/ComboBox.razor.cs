@@ -42,12 +42,13 @@ namespace COM617.Components.Inputs
                 await JSRuntime!.InvokeVoidAsync("Dropdown.register", $"#combobox-{uniqueId}", $"#options-{uniqueId}", objRef);
         }
 
-        private async Task SetInput(string value)
+        private async Task SetInput(string value, bool close = false)
         {
             input = value;
-            comboVisible = false;
-            StateHasChanged();
             await InputChanged.InvokeAsync(input);
+            if (close)
+                comboVisible = false;
+            StateHasChanged();
         }
 
         [JSInvokable("OnCloseEventReceived")]

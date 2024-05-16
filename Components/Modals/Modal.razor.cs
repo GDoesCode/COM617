@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using COM617.Services;
+using Microsoft.AspNetCore.Components;
 
 namespace COM617.Components.Modals
 {
@@ -16,5 +17,8 @@ namespace COM617.Components.Modals
         /// </summary>
         [Parameter]
         public string CustomCSS { get; set; } = string.Empty;
+
+        [Inject]
+        private ModalService? ModalService { get; set; }
     }
 }

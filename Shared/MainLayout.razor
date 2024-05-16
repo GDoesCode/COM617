@@ -7,10 +7,6 @@
 
 <AuthorizeView>
     <Authorized>
-        @{
-            SetIdentity(context.User.Identity!);
-        }
-
         @if (ModalService!.ModalShowing)
         {
             <div>
@@ -42,5 +38,4 @@
         </div>
     </Authorized>
 </AuthorizeView>
-
 

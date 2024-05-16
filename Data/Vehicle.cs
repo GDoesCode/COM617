@@ -39,6 +39,8 @@ namespace COM617.Data
         public int Year { get; set; }
         public int Doors { get; set; }
         public int Seats { get; set; }
+        public bool Booked { get; set; }
+        public bool Disabled { get; set; }
 
         public Vehicle()
         {
