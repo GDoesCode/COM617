@@ -3,8 +3,7 @@ name: Build and Test
 on:
   push:
     branches:
-      - main
-      - master
+      - ga/booking-system
 
 jobs:
   build:
